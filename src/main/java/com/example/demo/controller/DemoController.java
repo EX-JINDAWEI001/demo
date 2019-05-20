@@ -15,10 +15,15 @@ public class DemoController {
 
     private Logger logger = LoggerFactory.getLogger(DemoController.class);
 
-    @RequestMapping("/test.do")
+    @RequestMapping("/test1.do")
     public String test1(HttpServletRequest request, HttpServletResponse response) {
         logger.info("test1 input params:{}", JSON.toJSONString(request.getParameterMap()));
         return "HELLO WORLD !!!";
+    }
+
+    @RequestMapping("/test2.do")
+    public String test2(HttpServletRequest request, HttpServletResponse response) {
+        return "TEST GITHUB !!!";
     }
 
 }
