@@ -23,7 +23,7 @@ public class DemoController {
 
     @RequestMapping("/test2.do")
     public String test2(HttpServletRequest request, HttpServletResponse response) {
-        return "TEST GITHUB !!!";
+        return "TEST GITHUB !";
     }
 
 }
