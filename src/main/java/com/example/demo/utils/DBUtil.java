@@ -20,7 +20,7 @@ public class DBUtil {
 		//加载配置文件
 		Properties p=new Properties();
 		try {
-			p.load(DBUtil.class.getClassLoader().getResourceAsStream("application-development.properties"));
+			p.load(DBUtil.class.getClassLoader().getResourceAsStream("application.properties"));
 			String driver=p.getProperty("driver");
 			String url=p.getProperty("url");
 			String username=p.getProperty("username");

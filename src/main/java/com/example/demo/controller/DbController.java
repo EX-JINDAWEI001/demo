@@ -17,7 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController("/db")
+@RequestMapping("/db")
+@RestController
 public class DbController {
 
     private static Logger logger = LoggerFactory.getLogger(DbController.class);
