@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@RestController
+@RestController("/demo")
 public class DemoController {
 
     private Logger logger = LoggerFactory.getLogger(DemoController.class);
