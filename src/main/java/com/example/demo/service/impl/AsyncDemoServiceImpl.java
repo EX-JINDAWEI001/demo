@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.common.AsyncTask;
+import com.example.demo.common.system.SimpleServiceInit;
 import com.example.demo.service.AsyncDemoService;
 import com.example.demo.common.AsyncHandler;
 import org.slf4j.Logger;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.Future;
 
 @Service
-public class AsyncDemoServiceImpl implements AsyncDemoService {
+public class AsyncDemoServiceImpl implements AsyncDemoService, SimpleServiceInit {
 
     Logger logger = LoggerFactory.getLogger(AsyncDemoServiceImpl.class);
 
@@ -43,6 +44,11 @@ public class AsyncDemoServiceImpl implements AsyncDemoService {
 
     private void doOtherthing() throws InterruptedException {
         Thread.sleep(3000);
+    }
+
+    @Override
+    public void init() {
+        System.out.println("======================init method======================");
     }
 
 }
