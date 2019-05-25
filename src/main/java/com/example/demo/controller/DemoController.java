@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.demo.common.annotation.Auth;
+import com.example.demo.common.annotation.Uid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +22,11 @@ public class DemoController {
 
     private Logger logger = LoggerFactory.getLogger(DemoController.class);
 
+    @Auth(user = "admin")
     @RequestMapping("/test1.do")
-    public String test1(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("test1 input params:{}", request.getParameterMap());
-        return "HELLO WORLD !!!";
+    public String test1(HttpServletRequest request, HttpServletResponse response, @Uid(isRequired = true) String uid) {
+        logger.info("test1 input params:{}", JSON.toJSONString(request.getParameterMap()));
+        return "HELLO:" + uid;
     }
 
     @RequestMapping("/test2.do")
