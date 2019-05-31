@@ -3,11 +3,13 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.demo.common.annotation.Auth;
 import com.example.demo.common.annotation.Uid;
+import com.example.demo.common.http.HttpClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,9 @@ public class DemoController {
 
     private Logger logger = LoggerFactory.getLogger(DemoController.class);
 
+    @Resource()
+    private HttpClientUtil httpClientUtil;
+
     @Auth(user = "admin")
     @RequestMapping("/test1.do")
     public String test1(HttpServletRequest request, HttpServletResponse response, @Uid(isRequired = true) String uid) {
@@ -31,7 +36,8 @@ public class DemoController {
 
     @RequestMapping("/test2.do")
     public String test2(HttpServletRequest request, HttpServletResponse response) {
-        return "TEST GITHUB !!!";
+        httpClientUtil.httpPostRequest("http://localhost:8800/async/asyncDemo.do", null);
+        return httpClientUtil.httpGetRequest("http://localhost:8800/async/asyncDemo.do");
     }
 
     @RequestMapping("/getAppLoadingList.do")

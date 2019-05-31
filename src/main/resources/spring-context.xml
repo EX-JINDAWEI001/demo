@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<description>自定义beans</description>
+
+	<bean id="httpClientUtil" class="com.example.demo.common.http.HttpClientUtil">
+		<property name="connTimeout">
+			<value>300</value>
+		</property>
+		<property name="connRequestTimeout" value="6000"/>
+		<property name="socketTimeout" value="6000"/>
+	</bean>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<description>可以引用CLASSPATH中application.properties中定义的变量</description>
+			<value>classpath:application.properties</value>
+		</property>
+	</bean>
+
+</beans>
