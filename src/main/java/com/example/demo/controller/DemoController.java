@@ -3,9 +3,11 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.demo.common.annotation.Auth;
 import com.example.demo.common.annotation.Uid;
+import com.example.demo.common.guava.GuavaDemo;
 import com.example.demo.common.http.HttpClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +29,9 @@ public class DemoController {
     @Resource()
     private HttpClientUtil httpClientUtil;
 
+    @Autowired
+    private GuavaDemo guavaDemo;
+
     @Auth(user = "admin")
     @RequestMapping("/test1.do")
     public String test1(HttpServletRequest request, HttpServletResponse response, @Uid(isRequired = true) String uid) {
@@ -38,6 +43,11 @@ public class DemoController {
     public String test2(HttpServletRequest request, HttpServletResponse response) {
         httpClientUtil.httpPostRequest("http://localhost:8800/async/asyncDemo.do", null);
         return httpClientUtil.httpGetRequest("http://localhost:8800/async/asyncDemo.do");
+    }
+
+    @RequestMapping("/test3.do")
+    public Object test3(HttpServletRequest request, HttpServletResponse response) {
+        return guavaDemo.fetchCache();
     }
 
     @RequestMapping("/getAppLoadingList.do")
