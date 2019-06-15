@@ -19,7 +19,7 @@ public class TraceServiceImpl implements TraceService, SimpleServiceInit {
     public void trace(Map paraMap) {
         synchronized (synList){
             synList.add(paraMap);
-            synList.notify();
+            synList.notifyAll();
         }
     }
 
