@@ -26,8 +26,8 @@ public class TraceThreadImpl extends AbstractThread {
                 synList.wait();
             }
             doService();
-        } catch (InterruptedException e) {
-            logger.error("doThreadService threadName is : {}, InterruptedException is :{}", getName(), e);
+        } catch (Exception e) {
+            logger.error("doThreadService threadName is : {}, Exception is :{}", getName(), e);
         }
     }
 
@@ -36,6 +36,7 @@ public class TraceThreadImpl extends AbstractThread {
      */
     private void doService() {
         logger.info("doThreadService synList is :{}", synList);
+        int a = 1/0;
     }
 
 }
