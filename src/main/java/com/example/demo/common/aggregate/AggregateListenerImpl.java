@@ -1,6 +1,8 @@
 package com.example.demo.common.aggregate;
 
 import com.example.demo.common.vo.AggregateDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AggregateListenerImpl implements AggregateListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(AggregateListenerImpl.class);
 
     /**
      * 聚合相关
@@ -26,7 +30,7 @@ public class AggregateListenerImpl implements AggregateListener {
             Object[] args = getParams(request, response, m);
             ret = m.invoke(dto.getInstance(), args);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("changeProperty error:{}", e);
         }
         Map<String, Object> retMap = new HashMap<>();
         retMap.put(dto.getUrl(), ret);

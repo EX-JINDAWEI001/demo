@@ -1,8 +1,5 @@
 package com.example.demo.common.thread;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public abstract class AbstractThread extends Thread{
 
     private boolean cycle = false;

@@ -17,8 +17,7 @@ public class AggregateController {
 
     @RequestMapping("/aggregate.do")
     public Map<String, Map<String, Object>> aggregate(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Map<String, Object>> ret = aggregateService.aggregate(request, response);
-        return ret;
+        return aggregateService.aggregate(request, response);
     }
 
 }

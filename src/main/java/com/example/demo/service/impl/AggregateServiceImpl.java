@@ -115,7 +115,7 @@ public class AggregateServiceImpl implements SimpleServiceInit {
                     retMap.wait(2);
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
 
