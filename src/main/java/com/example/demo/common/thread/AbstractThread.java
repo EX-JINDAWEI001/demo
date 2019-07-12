@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractThread extends Thread{
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractThread.class);
-
     private boolean cycle = false;
 
     public AbstractThread(){
