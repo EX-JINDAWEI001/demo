@@ -31,7 +31,7 @@ public class ChangePropertyThread extends AbstractThread {
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {
-            //ignore
+            Thread.currentThread().interrupt();
         }
 
         Map<String,Object> ret = ((AggregateListener)dto.getInstance()).changeProperty(dto, request, response);
