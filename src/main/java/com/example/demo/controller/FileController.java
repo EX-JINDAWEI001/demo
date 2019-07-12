@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,12 +10,12 @@ import java.io.*;
 @RequestMapping("/file")
 public class FileController {
 
-    @RequestMapping(value = "/getFileInputStream.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/getFileInputStream.do")
     public void getFileInputStream(String fileName, HttpServletResponse response) throws IOException {
         OutputStream out = null;
         BufferedInputStream bis = null;
         try{
-            File f = new File("/Users/david/Downloads/项目精华整理.txt");
+            File f = new File("/Users/david/Downloads/项目精华整理");
             if (!f.exists()) {
                 response.sendError(404, "file not found !");
                 return;
