@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-@PropertySource({"application.properties"})
+@PropertySource(ignoreResourceNotFound = true, value = {"classpath:application.properties"})
 public class DemoApplication {
 
 	public static void main(String[] args) {

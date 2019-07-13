@@ -23,14 +23,11 @@ import javax.sql.DataSource;
 @MapperScan(basePackages = "com.example.demo.b.**.dao.mapper.**", sqlSessionFactoryRef = "bSqlSessionTemplate")
 public class DataSourceForMultiB {
 
-    @Autowired
-    private Environment env;
-
     @Value("${mybatis.mapper-locations}")
     private String bMapperLocations;
 
     @Bean(name = "bDataSource")
-    public DataSource getDataSource() {
+    public DataSource getDataSource(Environment env) {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName(env.getProperty("spring.datasource.b.driverClassName"));
         dataSource.setUrl(env.getProperty("spring.datasource.b.url"));
