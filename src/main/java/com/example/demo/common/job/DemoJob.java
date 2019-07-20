@@ -24,14 +24,22 @@ public class DemoJob {
     @Resource
     private MongoTemplate mongoTemplate;
 
+    private static final String lockKey = "test";
+
     @Scheduled(cron = "0/5 * * * * ?")
     public void doJob() {
         logger.info("demoJob doJob------------");
-        if (mongoLockHandler.getLock("test", 1000)) {
-            Criteria criteria = new Criteria();
-            criteria.andOperator(Criteria.where("age").gt(10), Criteria.where("age").lt(30));
-            Query query = new Query(criteria);
-            mongoTemplate.remove(query, "jdw");
+        try {
+            if (mongoLockHandler.getLock(lockKey, 1000)) {
+                Criteria criteria = new Criteria();
+                criteria.andOperator(Criteria.where("age").gt(10), Criteria.where("age").lt(30));
+                Query query = new Query(criteria);
+                mongoTemplate.remove(query, "jdw");
+            }
+        } catch (Exception e) {
+            logger.error("demoJob error:{}", e);
+        } finally {
+            mongoLockHandler.releaseLock(lockKey);
         }
         logger.info("demoJob doJob collection jdw is{}", mongoTemplate.findAll(Map.class, "jdw"));
     }
