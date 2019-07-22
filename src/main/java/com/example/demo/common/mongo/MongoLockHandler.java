@@ -21,11 +21,12 @@ public class MongoLockHandler {
         if (locks.size() > 0) {
             if (locks.get(0).getExpire() >= System.currentTimeMillis()) {//锁已经被别人获取
                 return false;
-            } else {//释放过期的锁
+            } else {//释放过期的锁,以便进行新一轮竞争
                 this.releaseExpiredLock(key, System.currentTimeMillis());
             }
         }
 
+        //开始新一轮竞争
         int value = this.upsertLock(key, 1, System.currentTimeMillis() + expire);
         return value == 1 ? true : false;
 
