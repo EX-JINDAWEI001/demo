@@ -32,7 +32,7 @@ public class DemoJob {
         try {
             if (mongoLockHandler.getLock(lockKey, 1000)) {
                 Criteria criteria = new Criteria();
-                criteria.andOperator(Criteria.where("age").gt(10), Criteria.where("age").lt(30));
+                criteria.andOperator(Criteria.where("age").gt(30), Criteria.where("age").lt(100));
                 Query query = new Query(criteria);
                 mongoTemplate.remove(query, "jdw");
             }

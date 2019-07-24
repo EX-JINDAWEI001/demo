@@ -5,7 +5,10 @@ import com.example.demo.common.vo.ResultVo;
 import com.example.demo.utils.DBUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.Index;
+import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +21,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @RequestMapping("/db")
 @RestController
@@ -65,10 +66,17 @@ public class DbController {
     public ResultVo<Object> test2(HttpServletRequest request, HttpServletResponse response) {
         logger.info("MONGODB test start");
         try {
+            IndexOperations indexOperations = mongoTemplate.indexOps("jdw");
+            Index index = new Index();
+            index.on("date", Sort.Direction.DESC);
+            index.expire(60, TimeUnit.SECONDS);
+            indexOperations.ensureIndex(index);
+
             Map<String, Object> paraMap = new HashMap<>();
             paraMap.put("name", "西门吹雪");
             paraMap.put("age", 18);
             paraMap.put("address", "湖北武汉");
+            paraMap.put("date", new Date());
             mongoTemplate.insert(paraMap, "jdw");
 
             Query query = new Query();
