@@ -69,7 +69,7 @@ public class DbController {
             IndexOperations indexOperations = mongoTemplate.indexOps("jdw");
             Index index = new Index();
             index.on("date", Sort.Direction.DESC);
-            index.expire(60, TimeUnit.SECONDS);
+            index.expire(30, TimeUnit.SECONDS);
             indexOperations.ensureIndex(index);
 
             Map<String, Object> paraMap = new HashMap<>();
@@ -81,7 +81,6 @@ public class DbController {
 
             Query query = new Query();
             query.addCriteria(Criteria.where("name").is("西门吹雪"));
-
             List<Map> list = mongoTemplate.find(query, Map.class, "jdw");
             return new ResultVo<>(ResultVoEnum.SUCCESS.getCode(), ResultVoEnum.SUCCESS.getMsg(), list);
         } catch (Exception e) {
