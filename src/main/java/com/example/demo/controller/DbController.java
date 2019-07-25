@@ -67,10 +67,12 @@ public class DbController {
         logger.info("MONGODB test start");
         try {
             IndexOperations indexOperations = mongoTemplate.indexOps("jdw");
-            Index index = new Index();
-            index.on("date", Sort.Direction.DESC);
-            index.expire(30, TimeUnit.SECONDS);
-            indexOperations.ensureIndex(index);
+            if (indexOperations.getIndexInfo().size() <= 1) {
+                Index index = new Index();
+                index.on("date", Sort.Direction.DESC);
+                index.expire(30, TimeUnit.SECONDS);
+                indexOperations.ensureIndex(index);
+            }
 
             Map<String, Object> paraMap = new HashMap<>();
             paraMap.put("name", "西门吹雪");
