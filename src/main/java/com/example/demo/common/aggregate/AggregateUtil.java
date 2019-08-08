@@ -15,7 +15,7 @@ public class AggregateUtil {
 
     private static Logger logger = LoggerFactory.getLogger(AggregateUtil.class);
 
-    public static <T extends Object> T getDTO(HttpServletRequest request, Class<T> clazz) {
+    public static <T> T getDTO(HttpServletRequest request, Class<T> clazz) {
         Method[] methods = clazz.getMethods();
         if (methods != null && methods.length > 0) {
 
