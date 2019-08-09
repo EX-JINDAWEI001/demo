@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.common.enums.ResultVoEnum;
+import com.example.demo.common.redis.RedisHandler;
 import com.example.demo.common.vo.ResultVo;
 import com.example.demo.utils.DBUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
@@ -32,6 +34,9 @@ public class DbController {
 
     @Resource
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private RedisHandler redisHandler;
 
     /**
      * 测试数据库连接
@@ -64,7 +69,7 @@ public class DbController {
 
     @RequestMapping("/test2.do")
     public ResultVo<Object> test2(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("MONGODB test start");
+        logger.info("MONGODB test start......");
         try {
             IndexOperations indexOperations = mongoTemplate.indexOps("jdw");
             if (indexOperations.getIndexInfo().size() <= 1) {
@@ -87,6 +92,32 @@ public class DbController {
             return new ResultVo<>(ResultVoEnum.SUCCESS.getCode(), ResultVoEnum.SUCCESS.getMsg(), list);
         } catch (Exception e) {
             logger.error("MONGODB test error:{}", e);
+            return new ResultVo<>(ResultVoEnum.FAILED.getCode(), ResultVoEnum.FAILED.getMsg());
+        }
+    }
+
+    @RequestMapping("/test3.do")
+    public ResultVo<Object> test3(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("redis test start......");
+        try {
+            redisHandler.set("string", "value");
+            redisHandler.hset("hash", "field", "value");
+            redisHandler.lpush("list", "value");
+            redisHandler.sadd("set", "value");
+            redisHandler.zadd("zset", "value1", 10d);
+            redisHandler.zadd("zset", "value2", 200d);
+            redisHandler.zadd("zset", "value3", 100d);
+
+            Map<String, Object> ret = new HashMap<>();
+            ret.put("string", redisHandler.get("string"));
+            ret.put("hash", redisHandler.hget("hash", "field"));
+            ret.put("list", redisHandler.rpop("list"));
+            ret.put("set", redisHandler.spop("set"));
+            ret.put("zset", redisHandler.zRangeWithScores("zset", 0l, -1l));
+
+            return new ResultVo<>(ResultVoEnum.SUCCESS.getCode(), ResultVoEnum.SUCCESS.getMsg(), ret);
+        } catch (Exception e) {
+            logger.error("redis test error:{}", e);
             return new ResultVo<>(ResultVoEnum.FAILED.getCode(), ResultVoEnum.FAILED.getMsg());
         }
     }
