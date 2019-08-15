@@ -114,7 +114,6 @@ public class DbController {
             ret.put("list", redisHandler.rpop("list"));
             ret.put("set", redisHandler.spop("set"));
             ret.put("zset", redisHandler.zRangeWithScores("zset", 0l, -1l));
-
             return new ResultVo<>(ResultVoEnum.SUCCESS.getCode(), ResultVoEnum.SUCCESS.getMsg(), ret);
         } catch (Exception e) {
             logger.error("redis test error:{}", e);

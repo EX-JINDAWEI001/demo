@@ -4,6 +4,8 @@ public class MongoLock {
 
     private String key;
 
+    private String requestId;
+
     private Integer value;
 
     private Long expire;
@@ -32,4 +34,11 @@ public class MongoLock {
         this.expire = expire;
     }
 
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
 }

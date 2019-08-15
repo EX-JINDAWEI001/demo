@@ -65,11 +65,7 @@ public class RedisHandler {
 
     public Boolean setnxex(String key, String value, Long expireTime) {
         try {
-            boolean isDone = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
-            if(isDone) {
-                stringRedisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
-            }
-            return isDone;
+            return stringRedisTemplate.opsForValue().setIfAbsent(key, value, expireTime, TimeUnit.SECONDS);
         } catch (Exception e) {
             logger.error("setnxex error:{}", e);
             return false;
