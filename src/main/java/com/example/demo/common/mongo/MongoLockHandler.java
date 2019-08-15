@@ -11,10 +11,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class MongoLockHandler {
@@ -28,17 +25,14 @@ public class MongoLockHandler {
         List<MongoLock> locks = this.getLockByKey(key);
         if (locks.size() > 0) {
             if (locks.get(0).getExpire() >= System.currentTimeMillis()) {//锁已经被别人获取
-                logger.info("锁已经被别人获取");
                 return false;
             } else {//释放过期的锁,以便进行新一轮竞争
                 this.releaseExpiredLock(key, System.currentTimeMillis());
-                logger.info("释放过期的锁");
             }
         }
 
         //开始新一轮竞争
         int value = this.upsertLock(key, 1, System.currentTimeMillis() + expire);
-        logger.info("锁为：{}", value);
         return value == 1 ? true : false;
 
     }

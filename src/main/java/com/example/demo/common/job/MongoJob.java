@@ -1,6 +1,7 @@
 package com.example.demo.common.job;
 
 import com.example.demo.common.mongo.MongoLockHandler;
+import com.example.demo.common.system.SimpleServiceInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MongoJob {
+public class MongoJob implements SimpleServiceInit {
 
     private static final Logger logger = LoggerFactory.getLogger(MongoJob.class);
 
@@ -17,7 +18,7 @@ public class MongoJob {
 
     private static final String LOCK_KEY = "LOCK_KEY";
 
-    @Scheduled(cron = "0/3 * * * * ?")
+    @Scheduled(cron = "0 1 * * * ?")
     public void doJob(){
         boolean isLock = false;
         try {
@@ -34,4 +35,34 @@ public class MongoJob {
             }
         }
     }
+
+    @Override
+    public void init() {
+
+        Runnable r1 = () -> {
+            while (true) {
+                logger.info("aaaaa:{}", mongoLockHandler.lock(LOCK_KEY, 3000));
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Runnable r2 = () -> {
+            while (true) {
+                logger.info("bbbbb:{}", mongoLockHandler.lock(LOCK_KEY, 3000));
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        new Thread(r1).start();
+        new Thread(r2).start();
+    }
+
 }
