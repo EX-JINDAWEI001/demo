@@ -15,7 +15,7 @@ public class AsyncHandler {
     public void afterPropertiesSet() {
         int processors = Runtime.getRuntime().availableProcessors();
         executor = new ThreadPoolExecutor( processors * 2, processors * 3,
-                1000, TimeUnit.MILLISECONDS,
+                300, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(128),
                 new ThreadPoolExecutor.AbortPolicy());
     }
