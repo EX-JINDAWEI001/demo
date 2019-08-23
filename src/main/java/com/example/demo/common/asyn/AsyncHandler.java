@@ -9,13 +9,15 @@ import java.util.concurrent.*;
 @Component
 public class AsyncHandler {
 
-    public ExecutorService executor;
+    public static ExecutorService executor;
 
     @PostConstruct
     public void afterPropertiesSet() {
         int processors = Runtime.getRuntime().availableProcessors();
-        executor = new ThreadPoolExecutor(processors * 2, processors * 2 + 1,
-                1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(128));
+        executor = new ThreadPoolExecutor( processors * 2, processors * 3,
+                1000, TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<>(128),
+                new ThreadPoolExecutor.AbortPolicy());
     }
 
     @PreDestroy
