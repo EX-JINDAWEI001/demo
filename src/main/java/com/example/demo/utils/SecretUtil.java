@@ -10,6 +10,8 @@ import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.*;
 import java.util.*;
 
@@ -200,7 +202,7 @@ public class SecretUtil {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
         System.out.println(sha1_1("abcdef"));
         System.out.println(sha1_2("abcdef"));
 
@@ -214,7 +216,8 @@ public class SecretUtil {
         System.out.println(AES_Decrypt2("CGCaNZYUlNY3ZWD+p7aqT6nrZpy9gNDuLepU1q4bAxd1rfI3rWFCyUho8m7ID7pn", "jdwjdwjdwjdwjdwj", "jdwjdwjdwjdwjdwj"));
 
         System.out.println(AES_Encrypt3("金大为哈哈哈哈哈", "jdwjdwjdwjdwjdwj", "jdwjdwjdwjdwjdwj"));
-        System.out.println(AES_Decrypt2("CGCaNZYUlNY3ZWD+p7aqTztouHZh6ubtUwDAVraDMMQ=","jdwjdwjdwjdwjdwj", "jdwjdwjdwjdwjdwj"));
+        System.out.println(URLEncoder.encode(AES_Encrypt3("金大为哈哈哈哈哈", "jdwjdwjdwjdwjdwj", "jdwjdwjdwjdwjdwj"), CHARSET));
+        System.out.println(AES_Decrypt2(URLDecoder.decode("CGCaNZYUlNY3ZWD%2Bp7aqT6nrZpy9gNDuLepU1q4bAxd1rfI3rWFCyUho8m7ID7pn", CHARSET),"jdwjdwjdwjdwjdwj", "jdwjdwjdwjdwjdwj"));
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", "金大为");
