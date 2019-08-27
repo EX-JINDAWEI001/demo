@@ -13,6 +13,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 
 public class SecretUtil {
@@ -202,6 +206,131 @@ public class SecretUtil {
         }
     }
 
+    //RSA================================================================================================RSA\\
+    private static Map<Integer, String> keyMap = new HashMap<>();
+
+    static {
+        try {
+            genKeyPair();
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("genKeyPair error: {}", e);
+        }
+    }
+
+    /**
+     * 随机生成密钥对
+     * @throws NoSuchAlgorithmException
+     */
+    public static void genKeyPair() throws NoSuchAlgorithmException {
+        // KeyPairGenerator类用于生成公钥和私钥对，基于RSA算法生成对象
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+        // 初始化密钥对生成器，密钥大小为96-1024位
+        keyPairGen.initialize(1024,new SecureRandom());
+        // 生成一个密钥对，保存在keyPair中
+        KeyPair keyPair = keyPairGen.generateKeyPair();
+        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+        String publicKeyString = new String(Base64.encodeBase64(publicKey.getEncoded()));
+        String privateKeyString = new String(Base64.encodeBase64((privateKey.getEncoded())));
+        // 将公钥和私钥保存到Map
+        keyMap.put(0,publicKeyString);
+        keyMap.put(1,privateKeyString);
+    }
+
+    public static String RSA_Encrypt( String str, String publicKey ) {
+        try {
+            //base64编码的公钥
+            byte[] decoded = Base64.decodeBase64(publicKey);
+            RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decoded));
+            //RSA加密
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.ENCRYPT_MODE, pubKey);
+            return Base64.encodeBase64String(cipher.doFinal(str.getBytes(CHARSET)));
+        } catch(Exception e) {
+            logger.error("RSA_Encrypt error: ", e);
+            return null;
+        }
+    }
+
+    public static String RSA_Decrypt(String str, String privateKey) {
+        try {
+            //64位解码加密后的字符串
+            byte[] inputByte = Base64.decodeBase64(str.getBytes(CHARSET));
+            //base64编码的私钥
+            byte[] decoded = Base64.decodeBase64(privateKey);
+            RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decoded));
+            //RSA解密
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.DECRYPT_MODE, priKey);
+            return new String(cipher.doFinal(inputByte));
+        } catch(Exception e) {
+            logger.error("RSA_Decrypt error: ", e);
+            return null;
+        }
+    }
+
+    public static String RSA_Sign(String data, String privateKey) {
+        try {
+            byte[] decoded = Base64.decodeBase64(privateKey);
+            RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decoded));
+
+            Signature signature = Signature.getInstance("MD5withRSA");
+            signature.initSign(priKey);
+            signature.update(data.getBytes(CHARSET));
+            return new String(Base64.encodeBase64(signature.sign()), CHARSET);
+        } catch (Exception e) {
+            logger.error("RSA_Sign error: ", e);
+            return null;
+        }
+    }
+
+    public static boolean RSA_Verify(String data, String publicKey, String sign) {
+        try {
+            byte[] decoded = Base64.decodeBase64(publicKey);
+            RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decoded));
+
+            Signature signature = Signature.getInstance("MD5withRSA");
+            signature.initVerify(pubKey);
+            signature.update(data.getBytes(CHARSET));
+            return signature.verify(Base64.decodeBase64(sign));
+        } catch (Exception e) {
+            logger.error("RSA_Verify error: ", e);
+            return false;
+        }
+    }
+
+    public static String RSA_Encrypt1( String str, String privateKey) {
+        try {
+            //base64编码的公钥
+            byte[] decoded = Base64.decodeBase64(privateKey);
+            RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decoded));
+            //RSA加密
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.ENCRYPT_MODE, priKey);
+            return Base64.encodeBase64String(cipher.doFinal(str.getBytes(CHARSET)));
+        } catch(Exception e) {
+            logger.error("RSA_Encrypt1 error: ", e);
+            return null;
+        }
+    }
+
+    public static String RSA_Decrypt1(String str, String publicKey) {
+        try {
+            //64位解码加密后的字符串
+            byte[] inputByte = Base64.decodeBase64(str.getBytes(CHARSET));
+            //base64编码的私钥
+            byte[] decoded = Base64.decodeBase64(publicKey);
+            RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decoded));
+            //RSA解密
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.DECRYPT_MODE, pubKey);
+            return new String(cipher.doFinal(inputByte));
+        } catch(Exception e) {
+            logger.error("RSA_Decrypt1 error: ", e);
+            return null;
+        }
+    }
+
     public static void main(String[] args) throws UnsupportedEncodingException {
         System.out.println(sha1_1("abcdef"));
         System.out.println(sha1_2("abcdef"));
@@ -225,6 +354,19 @@ public class SecretUtil {
         paramMap.put("sex", "M");
         paramMap.put("interests", JSON.toJSONString(new String[]{"打球", "钓鱼", "阅读"}));
         System.out.println(getSignature(paramMap, "jdwjdwjdwjdwjdwj"));
+
+        String rsaen = RSA_Encrypt("金大为哈哈哈哈哈", keyMap.get(0));
+        System.out.println(rsaen);
+        System.out.println(RSA_Decrypt(rsaen, keyMap.get(1)));
+
+        String rsaen1 = RSA_Encrypt1("金大为哈哈哈哈哈", keyMap.get(1));
+        System.out.println(rsaen1);
+        System.out.println(RSA_Decrypt1(rsaen1, keyMap.get(0)));
+
+        String sign = RSA_Sign(rsaen, keyMap.get(1));
+        System.out.println(sign);
+        System.out.println(RSA_Verify(rsaen, keyMap.get(0), sign));
+
     }
 
 
@@ -232,6 +374,7 @@ public class SecretUtil {
     public static String getSignature(Map<String, Object> paramMap, String partnerId) {
         String paraStr = ASCIIHandler(paramMap);
         return sha1_1(partnerId + paraStr);
+//        return RSA_Sign(partnerId + paraStr, keyMap.get(1));
     }
 
     private static String ASCIIHandler(Map<String, Object> paramMap) {
