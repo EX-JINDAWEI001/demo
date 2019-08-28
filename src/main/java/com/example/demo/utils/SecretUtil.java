@@ -274,7 +274,7 @@ public class SecretUtil {
             byte[] decoded = Base64.decodeBase64(privateKey);
             RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decoded));
 
-            Signature signature = Signature.getInstance("MD5withRSA");
+            Signature signature = Signature.getInstance("SHA256WithRSA");
             signature.initSign(priKey);
             signature.update(data.getBytes(CHARSET));
             return new String(Base64.encodeBase64(signature.sign()), CHARSET);
@@ -289,7 +289,7 @@ public class SecretUtil {
             byte[] decoded = Base64.decodeBase64(publicKey);
             RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decoded));
 
-            Signature signature = Signature.getInstance("MD5withRSA");
+            Signature signature = Signature.getInstance("SHA256WithRSA");
             signature.initVerify(pubKey);
             signature.update(data.getBytes(CHARSET));
             return signature.verify(Base64.decodeBase64(sign));
