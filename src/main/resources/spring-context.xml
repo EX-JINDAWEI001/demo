@@ -19,7 +19,16 @@
 		<property name="connRequestTimeout" value="6000"/>
 		<property name="socketTimeout" value="6000"/>
 	</bean>
-	
+
+	<bean id="mqConsumer" class="com.example.demo.common.mq.rocketmq.MqConsumer">
+		<property name="handlerMap">
+			<map>
+				<entry key="test" value-ref="testConsumer"/>
+				<entry key="redis" value-ref="redisConsumer"/>
+			</map>
+		</property>
+	</bean>
+
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location">
 			<description>可以引用CLASSPATH中application.properties中定义的变量</description>
