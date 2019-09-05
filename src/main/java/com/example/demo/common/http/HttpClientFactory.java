@@ -44,17 +44,17 @@ public class HttpClientFactory implements InitializingBean {
     private PoolingHttpClientConnectionManager connManager;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         this.buildConnManager();
     }
 
     private void buildConnManager() {
         logger.info("=====初始化http连接池=====");
-        HttpMessageParserFactory<HttpResponse> responsePaserFactory = new DefaultHttpResponseParserFactory();
+        HttpMessageParserFactory<HttpResponse> responseParserFactory = new DefaultHttpResponseParserFactory();
         HttpMessageWriterFactory<HttpRequest> requestWriterFactory = new DefaultHttpRequestWriterFactory();
 
         HttpConnectionFactory<HttpRoute, ManagedHttpClientConnection> connFactory
-                = new ManagedHttpClientConnectionFactory(requestWriterFactory, responsePaserFactory);
+                = new ManagedHttpClientConnectionFactory(requestWriterFactory, responseParserFactory);
 
         //create a connection manager with custom configuration
         connManager = new PoolingHttpClientConnectionManager(connFactory);
