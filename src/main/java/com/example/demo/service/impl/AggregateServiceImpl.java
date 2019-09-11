@@ -34,7 +34,7 @@ public class AggregateServiceImpl implements SimpleServiceInit {
 
     @Override
     public void init() {
-        pool = Executors.newFixedThreadPool(10);
+        pool = Executors.newFixedThreadPool(4);
         initUrlMappingMethods();
         initAggregateConfigs();
     }
