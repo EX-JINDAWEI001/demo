@@ -39,15 +39,15 @@ public class HttpClientUtil {
 
     private int socketTimeout;
 
-    public String httpGetRequest(CloseableHttpClient httpClient, String baseUrl, Map<String, String> params){
-        if (httpClient == null){
+    public String httpGetRequest(CloseableHttpClient httpClient, String baseUrl, Map<String, String> params) {
+        if (httpClient == null) {
             throw new NullPointerException("httpGetRequest parameter httpClient is null");
         }
-        if(StringUtils.isEmpty(baseUrl)){
+        if (StringUtils.isEmpty(baseUrl)) {
             throw new NullPointerException("httpGetRequest parameter baseUrl is null");
         }
         String url = baseUrl;
-        if(params != null && params.size() > 0){
+        if (params != null && params.size() > 0) {
             url += "?" + buildGetParams(params);
         }
         logger.info("httpGetRequest baseUrl is:{}", baseUrl);
@@ -70,9 +70,9 @@ public class HttpClientUtil {
     }
 
     private String buildGetParams(Map<String, String> params) {
-        if (params != null){
+        if (params != null) {
             List<NameValuePair> nvps = new ArrayList<>();
-            for (Map.Entry<String, String> e : params.entrySet()){
+            for (Map.Entry<String, String> e : params.entrySet()) {
                 String name = e.getKey();
                 String value = e.getValue();
                 nvps.add(new BasicNameValuePair(name, value));
@@ -82,54 +82,54 @@ public class HttpClientUtil {
         return "";
     }
 
-    public String httpGetRequest(CloseableHttpClient httpClient, String url){
+    public String httpGetRequest(CloseableHttpClient httpClient, String url) {
         return httpGetRequest(httpClient, url, null);
     }
 
-    public String httpGetRequest(String baseUrl, Map<String, String> params){
+    public String httpGetRequest(String baseUrl, Map<String, String> params) {
         return httpGetRequest(buildHttpClient(), baseUrl, params);
     }
 
-    public String httpGetRequest(String url){
+    public String httpGetRequest(String url) {
         return httpGetRequest(buildHttpClient(), url, null);
     }
 
     //================post method=================\\
 
-    public String httpPostRequest(CloseableHttpClient httpClient, String url, Map<String, String> params){
+    public String httpPostRequest(CloseableHttpClient httpClient, String url, Map<String, String> params) {
         return httpPostRequest(httpClient, url, params, null);
     }
 
-    public String httpPostRequest(String url, Map<String, String> params, Map<String, String> headers){
+    public String httpPostRequest(String url, Map<String, String> params, Map<String, String> headers) {
         return httpPostRequest(buildHttpClient(), url, params, headers);
     }
 
-    public String httpPostRequest(String url, Map<String, String> params){
+    public String httpPostRequest(String url, Map<String, String> params) {
         return httpPostRequest(buildHttpClient(), url, params, null);
     }
 
-    public String httpPostJsonRequest(CloseableHttpClient httpClient, String url, String jsonStr){
+    public String httpPostJsonRequest(CloseableHttpClient httpClient, String url, String jsonStr) {
         return httpPostJsonRequest(httpClient, url, jsonStr, null);
     }
 
-    public String httpPostJsonRequest(String url, String jsonStr, Map<String, String> headers){
+    public String httpPostJsonRequest(String url, String jsonStr, Map<String, String> headers) {
         return httpPostJsonRequest(buildHttpClient(), url, jsonStr, headers);
     }
 
-    public String httpPostJsonRequest(String url, String jsonStr){
+    public String httpPostJsonRequest(String url, String jsonStr) {
         return httpPostJsonRequest(buildHttpClient(), url, jsonStr, null);
     }
 
-    public String httpPostRequest(CloseableHttpClient httpClient, String url, Map<String, String> params, Map<String, String> headers){
-        if(httpClient == null){
+    public String httpPostRequest(CloseableHttpClient httpClient, String url, Map<String, String> params, Map<String, String> headers) {
+        if (httpClient == null) {
             throw new NullPointerException("httpPostRequest parameter httpClient is null");
         }
-        if(StringUtils.isEmpty(url)){
+        if (StringUtils.isEmpty(url)) {
             throw new NullPointerException("httpPostRequest parameter url is null");
         }
         logger.info("httpPostRequest parameter url is {}, params is {}, headers is {}", url, params, headers);
         long startTime = System.currentTimeMillis();
-        try{
+        try {
             HttpPost post = new HttpPost(url);
             setPostHeaders(post, headers);
             buildPostParams(post, params);
@@ -148,16 +148,16 @@ public class HttpClientUtil {
         return null;
     }
 
-    public String httpPostJsonRequest(CloseableHttpClient httpClient, String url, String jsonStr, Map<String, String> headers){
-        if(httpClient == null){
+    public String httpPostJsonRequest(CloseableHttpClient httpClient, String url, String jsonStr, Map<String, String> headers) {
+        if (httpClient == null) {
             throw new NullPointerException("httpPostJsonRequest parameter httpClient is null");
         }
-        if(StringUtils.isEmpty(url)){
+        if (StringUtils.isEmpty(url)) {
             throw new NullPointerException("httpPostJsonRequest parameter url is null");
         }
         logger.info("httpPostJsonRequest parameter url is {}, jsonStr is {}, headers is {}", url, jsonStr, headers);
         long startTime = System.currentTimeMillis();
-        try{
+        try {
             HttpPost post = new HttpPost(url);
             setPostHeaders(post, headers);
             post.setEntity(new StringEntity(jsonStr, ContentType.APPLICATION_JSON));
@@ -177,9 +177,9 @@ public class HttpClientUtil {
     }
 
     private void setPostHeaders(HttpPost post, Map<String, String> headers) {
-        if (headers != null){
+        if (headers != null) {
             List<NameValuePair> nvps = new ArrayList<>();
-            for (Map.Entry<String, String> e : headers.entrySet()){
+            for (Map.Entry<String, String> e : headers.entrySet()) {
                 String name = e.getKey();
                 String value = e.getValue();
                 post.setHeader(new BasicHeader(name, value));
@@ -188,9 +188,9 @@ public class HttpClientUtil {
     }
 
     private void buildPostParams(HttpPost post, Map<String, String> params) throws UnsupportedEncodingException {
-        if (params != null){
+        if (params != null) {
             List<NameValuePair> nvps = new ArrayList<>();
-            for (Map.Entry<String, String> e : params.entrySet()){
+            for (Map.Entry<String, String> e : params.entrySet()) {
                 String name = e.getKey();
                 String value = e.getValue();
                 nvps.add(new BasicNameValuePair(name, value));
@@ -200,15 +200,15 @@ public class HttpClientUtil {
     }
 
     private CloseableHttpClient buildHttpClient() {
-        if (connTimeout > 0 && connRequestTimeout > 0 && socketTimeout > 0){
+        if (connTimeout > 0 && connRequestTimeout > 0 && socketTimeout > 0) {
             return this.getClientFactory().build(connTimeout, connRequestTimeout, socketTimeout);
         } else {
             return this.getClientFactory().build();
         }
     }
 
-    private HttpClientFactory getClientFactory(){
-        if(httpClientFactory == null){
+    private HttpClientFactory getClientFactory() {
+        if (httpClientFactory == null) {
             httpClientFactory = new HttpClientFactory();
         }
         return httpClientFactory;

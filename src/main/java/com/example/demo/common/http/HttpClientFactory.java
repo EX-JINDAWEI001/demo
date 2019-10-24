@@ -31,11 +31,11 @@ public class HttpClientFactory implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpClientFactory.class);
 
-    private static int DEFAULT_CONN_TIMEOUT = 20 *1000;
+    private static int DEFAULT_CONN_TIMEOUT = 20 * 1000;
 
-    private static int DEFAULT_CONN_REQUEST_TIMEOUT = 20 *1000;
+    private static int DEFAULT_CONN_REQUEST_TIMEOUT = 20 * 1000;
 
-    private static int DEFAULT_SOCKET_TIMEOUT = 60 *1000;
+    private static int DEFAULT_SOCKET_TIMEOUT = 60 * 1000;
 
     private static int maxTotal = 100;
 
@@ -76,16 +76,16 @@ public class HttpClientFactory implements InitializingBean {
         connManager.setMaxTotal(maxTotal);
     }
 
-    public CloseableHttpClient build(){
+    public CloseableHttpClient build() {
         return build(DEFAULT_CONN_TIMEOUT, DEFAULT_CONN_REQUEST_TIMEOUT, DEFAULT_SOCKET_TIMEOUT);
     }
 
-    public CloseableHttpClient build(int connTimeout){
+    public CloseableHttpClient build(int connTimeout) {
         return build(connTimeout, DEFAULT_CONN_REQUEST_TIMEOUT, DEFAULT_SOCKET_TIMEOUT);
     }
 
-    public CloseableHttpClient build(int connTimeout, int reqTimeout, int socketTimeout){
-        if(connManager == null){
+    public CloseableHttpClient build(int connTimeout, int reqTimeout, int socketTimeout) {
+        if (connManager == null) {
             buildConnManager();
         }
 
