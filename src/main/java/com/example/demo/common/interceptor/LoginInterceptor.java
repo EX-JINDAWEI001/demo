@@ -2,7 +2,7 @@ package com.example.demo.common.interceptor;
 
 import com.example.demo.common.annotation.Auth;
 import com.example.demo.common.constans.Constants;
-import com.example.demo.utils.CookieUtil;
+import com.example.demo.common.utils.CookieUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
