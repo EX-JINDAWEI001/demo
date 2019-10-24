@@ -219,13 +219,14 @@ public class SecretUtil {
 
     /**
      * 随机生成密钥对
+     *
      * @throws NoSuchAlgorithmException
      */
     public static void genKeyPair() throws NoSuchAlgorithmException {
         // KeyPairGenerator类用于生成公钥和私钥对，基于RSA算法生成对象
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
         // 初始化密钥对生成器，密钥大小为96-1024位
-        keyPairGen.initialize(1024,new SecureRandom());
+        keyPairGen.initialize(1024, new SecureRandom());
         // 生成一个密钥对，保存在keyPair中
         KeyPair keyPair = keyPairGen.generateKeyPair();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
@@ -233,11 +234,11 @@ public class SecretUtil {
         String publicKeyString = new String(Base64.encodeBase64(publicKey.getEncoded()));
         String privateKeyString = new String(Base64.encodeBase64((privateKey.getEncoded())));
         // 将公钥和私钥保存到Map
-        keyMap.put(0,publicKeyString);
-        keyMap.put(1,privateKeyString);
+        keyMap.put(0, publicKeyString);
+        keyMap.put(1, privateKeyString);
     }
 
-    public static String RSA_Encrypt( String str, String publicKey ) {
+    public static String RSA_Encrypt(String str, String publicKey) {
         try {
             //base64编码的公钥
             byte[] decoded = Base64.decodeBase64(publicKey);
@@ -246,7 +247,7 @@ public class SecretUtil {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, pubKey);
             return Base64.encodeBase64String(cipher.doFinal(str.getBytes(CHARSET)));
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.error("RSA_Encrypt error: ", e);
             return null;
         }
@@ -263,7 +264,7 @@ public class SecretUtil {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, priKey);
             return new String(cipher.doFinal(inputByte));
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.error("RSA_Decrypt error: ", e);
             return null;
         }
@@ -299,7 +300,7 @@ public class SecretUtil {
         }
     }
 
-    public static String RSA_Encrypt1( String str, String privateKey) {
+    public static String RSA_Encrypt1(String str, String privateKey) {
         try {
             //base64编码的公钥
             byte[] decoded = Base64.decodeBase64(privateKey);
@@ -308,7 +309,7 @@ public class SecretUtil {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, priKey);
             return Base64.encodeBase64String(cipher.doFinal(str.getBytes(CHARSET)));
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.error("RSA_Encrypt1 error: ", e);
             return null;
         }
@@ -325,7 +326,7 @@ public class SecretUtil {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, pubKey);
             return new String(cipher.doFinal(inputByte));
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.error("RSA_Decrypt1 error: ", e);
             return null;
         }
@@ -346,7 +347,7 @@ public class SecretUtil {
 
         System.out.println(AES_Encrypt3("金大为哈哈哈哈哈", "jdwjdwjdwjdwjdwj", "jdwjdwjdwjdwjdwj"));
         System.out.println(URLEncoder.encode(AES_Encrypt3("金大为哈哈哈哈哈", "jdwjdwjdwjdwjdwj", "jdwjdwjdwjdwjdwj"), CHARSET));
-        System.out.println(AES_Decrypt2(URLDecoder.decode("CGCaNZYUlNY3ZWD%2Bp7aqT6nrZpy9gNDuLepU1q4bAxd1rfI3rWFCyUho8m7ID7pn", CHARSET),"jdwjdwjdwjdwjdwj", "jdwjdwjdwjdwjdwj"));
+        System.out.println(AES_Decrypt2(URLDecoder.decode("CGCaNZYUlNY3ZWD%2Bp7aqT6nrZpy9gNDuLepU1q4bAxd1rfI3rWFCyUho8m7ID7pn", CHARSET), "jdwjdwjdwjdwjdwj", "jdwjdwjdwjdwjdwj"));
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", "金大为");
@@ -368,7 +369,6 @@ public class SecretUtil {
         System.out.println(RSA_Verify(rsaen, keyMap.get(0), sign));
 
     }
-
 
 
     public static String getSignature(Map<String, Object> paramMap, String partnerId) {

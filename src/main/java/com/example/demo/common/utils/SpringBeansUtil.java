@@ -17,27 +17,29 @@ public class SpringBeansUtil implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    public static ApplicationContext getApplicationContext(){
+    public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
     /**
      * 根据名字获取bean
+     *
      * @param beanName
      * @param <T>
      * @return
      */
-    public static <T> T getBean(String beanName){
+    public static <T> T getBean(String beanName) {
         return (T) applicationContext.getBean(beanName);
     }
 
     /**
      * 根据bean类型获取bean
+     *
      * @param beanClass
      * @param <T>
      * @return
      */
-    public static <T> T getBean(Class<T> beanClass){
+    public static <T> T getBean(Class<T> beanClass) {
         return applicationContext.getBean(beanClass);
     }
 

@@ -22,6 +22,7 @@ public class DateUtil {
 
     /**
      * 将字符串转为日期
+     *
      * @param dateStr
      * @param format
      * @return
@@ -43,12 +44,13 @@ public class DateUtil {
 
     /**
      * 将日期转为字符串
+     *
      * @param date
      * @param format
      * @return
      */
     public static String date2Str(Date date, String format) {
-        if(date == null){
+        if (date == null) {
             return null;
         }
         if (StringUtils.isBlank(format)) {
@@ -60,12 +62,13 @@ public class DateUtil {
 
     /**
      * 将日期字符串转换为另一种格式的日期字符串
+     *
      * @param dateStr
      * @param inputFormat
      * @param outputFormat
      * @return
      */
-    public static String str2Str(String dateStr, String inputFormat, String outputFormat){
+    public static String str2Str(String dateStr, String inputFormat, String outputFormat) {
         if (StringUtils.isBlank(dateStr)) {
             return null;
         }
@@ -87,12 +90,13 @@ public class DateUtil {
 
     /**
      * 将日期增加或减少interval天
+     *
      * @param date
      * @param interval
      * @return
      */
-    public static Date addIntervalDay(Date date, int interval){
-        if(date == null){
+    public static Date addIntervalDay(Date date, int interval) {
+        if (date == null) {
             return null;
         }
         Calendar cl = Calendar.getInstance();
@@ -103,12 +107,13 @@ public class DateUtil {
 
     /**
      * 将日期增加或减少interval月
+     *
      * @param date
      * @param interval
      * @return
      */
-    public static Date addIntervalMonth(Date date, int interval){
-        if(date == null){
+    public static Date addIntervalMonth(Date date, int interval) {
+        if (date == null) {
             return null;
         }
         Calendar cl = Calendar.getInstance();
@@ -119,10 +124,11 @@ public class DateUtil {
 
     /**
      * 获取离第interval天凌晨相差多少秒
+     *
      * @param interval
      * @return
      */
-    public static int getSeconds20(int interval){
+    public static int getSeconds20(int interval) {
         Calendar cl = Calendar.getInstance();
         long now = cl.getTimeInMillis();
 
@@ -133,19 +139,20 @@ public class DateUtil {
         cl.set(Calendar.MILLISECOND, 0);
 
         long millis = cl.getTimeInMillis();
-        return (int) (millis-now)/1000;
+        return (int) (millis - now) / 1000;
     }
 
     /**
      * 获取前n个月的每个月日期集
+     *
      * @param n
      * @return
      */
-    public static List<String> getMonthList(int n){
+    public static List<String> getMonthList(int n) {
         SimpleDateFormat sdf = new SimpleDateFormat(default_pattern3);
         List<String> monthList = new ArrayList<>();
         Calendar cal = null;
-        for (int i=1; i<=n; i++){
+        for (int i = 1; i <= n; i++) {
             cal = Calendar.getInstance();
             cal.add(Calendar.MONTH, -i);
             monthList.add(sdf.format(cal.getTime()));
@@ -155,14 +162,15 @@ public class DateUtil {
 
     /**
      * 获取前n天的每一天日期集
+     *
      * @param n
      * @return
      */
-    public static List<String> getDayList(int n){
+    public static List<String> getDayList(int n) {
         SimpleDateFormat sdf = new SimpleDateFormat(default_pattern2);
         List<String> dayList = new ArrayList<>();
         Calendar cal = null;
-        for(int i=1; i<=n; i++){
+        for (int i = 1; i <= n; i++) {
             cal = Calendar.getInstance();
             cal.add(Calendar.DAY_OF_MONTH, -i);
             dayList.add(sdf.format(cal.getTime()));
@@ -172,12 +180,13 @@ public class DateUtil {
 
     /**
      * 判断dateStr表示的日期是否为月底
+     *
      * @param dateStr
      * @param format
      * @return
      */
-    public static boolean isLastDayOfMonth(String dateStr, String format){
-        if(StringUtils.isBlank(format)){
+    public static boolean isLastDayOfMonth(String dateStr, String format) {
+        if (StringUtils.isBlank(format)) {
             format = default_pattern1;
         }
         try {
@@ -185,7 +194,7 @@ public class DateUtil {
             Calendar cal = Calendar.getInstance();
             cal.setTime(sdf.parse(dateStr));
             cal.add(Calendar.DAY_OF_MONTH, 1);
-            return cal.get(Calendar.DAY_OF_MONTH)  == 1;
+            return cal.get(Calendar.DAY_OF_MONTH) == 1;
         } catch (Exception e) {
             return false;
         }
@@ -193,17 +202,18 @@ public class DateUtil {
 
     /**
      * 获取dateStr表示的日期所在月份的每一天日期集
+     *
      * @param dateStr
      * @return
      */
-    public static List<String> getDayListOfMonth(String dateStr){
+    public static List<String> getDayListOfMonth(String dateStr) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(default_pattern3);
             Calendar cal = Calendar.getInstance();
             cal.setTime(sdf.parse(dateStr));
             int days = cal.getActualMaximum(Calendar.DATE);
             List<String> dayList = new ArrayList<>();
-            for (int i=1; i<=days; i++){
+            for (int i = 1; i <= days; i++) {
                 dayList.add(dateStr + "-" + String.format("%02d", i));
             }
             return dayList;
@@ -214,17 +224,18 @@ public class DateUtil {
 
     /**
      * 获取start到end之间的日期集(一)
+     *
      * @param start
      * @param end
      * @param format
      * @return
      */
-    public static List<String> getBetweenDays(String start, String end, String format){
+    public static List<String> getBetweenDays(String start, String end, String format) {
         Date startDate = str2Date(start, format);
         Date endDate = str2Date(end, format);
         List<String> dateList = new ArrayList<>();
         dateList.add(end);
-        while(endDate.getTime() - startDate.getTime() >= millis){
+        while (endDate.getTime() - startDate.getTime() >= millis) {
             endDate = new Date(endDate.getTime() - millis);
             dateList.add(date2Str(endDate, format));
         }
@@ -233,6 +244,7 @@ public class DateUtil {
 
     /**
      * 获取start到end之间的日期集(二)
+     *
      * @param start
      * @param end
      * @return
@@ -247,7 +259,7 @@ public class DateUtil {
 
         Calendar cal = min;
         List<String> dayList = new ArrayList<>();
-        while(cal.before(max)){
+        while (cal.before(max)) {
             dayList.add(sdf.format(cal.getTime()));
             cal.add(Calendar.DAY_OF_YEAR, 1);
         }
@@ -256,6 +268,7 @@ public class DateUtil {
 
     /**
      * 获取start到end之间的月份集
+     *
      * @param start
      * @param end
      * @return
@@ -270,7 +283,7 @@ public class DateUtil {
 
         Calendar cal = min;
         List<String> dayList = new ArrayList<>();
-        while(cal.before(max)){
+        while (cal.before(max)) {
             dayList.add(sdf.format(cal.getTime()));
             cal.add(Calendar.MONTH, 1);
         }
@@ -279,6 +292,7 @@ public class DateUtil {
 
     /**
      * 获取dateStr所在的季度起止日期
+     *
      * @param dateStr
      * @param format
      * @return
@@ -292,16 +306,16 @@ public class DateUtil {
         int y = cal.get(Calendar.MONTH) + 1;
         String start = "";
         String end = "";
-        if(y >= 1 && y <= 3){
+        if (y >= 1 && y <= 3) {
             start = x + "-" + "01-01";
             end = x + "-" + "03-31";
-        }else if(y >=4 && y <= 6){
+        } else if (y >= 4 && y <= 6) {
             start = x + "-" + "04-01";
             end = x + "-" + "06-30";
-        }else if(y >= 7 && y <=9){
+        } else if (y >= 7 && y <= 9) {
             start = x + "-" + "07-01";
             end = x + "-" + "09-30";
-        }else if(y >= 10 && y <= 12){
+        } else if (y >= 10 && y <= 12) {
             start = x + "-" + "10-01";
             end = x + "-" + "12-31";
         }
@@ -313,6 +327,7 @@ public class DateUtil {
 
     /**
      * 获取dateStr所在的月份起止日期
+     *
      * @param dateStr
      * @param format
      * @return
@@ -336,6 +351,7 @@ public class DateUtil {
 
     /**
      * 获取dateStr所在的年份起止日期
+     *
      * @param dateStr
      * @param format
      * @return
