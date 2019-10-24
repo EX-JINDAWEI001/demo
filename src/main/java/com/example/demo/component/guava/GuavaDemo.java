@@ -25,27 +25,27 @@ public class GuavaDemo {
 
     private static final long expireTime = 30 * 60;
 
-    public Object fetchCache(){
-        try{
+    public Object fetchCache() {
+        try {
             return cache.get("cacheKey", new Callable<Object>() {
                 @Override
                 public Object call() {
                     return fetchCacheFromOtherMethod();
                 }
             });
-        } catch(ExecutionException e){
+        } catch (ExecutionException e) {
             logger.error("fetchCache error:{}", e);
             return fetchCacheFromOtherMethod();
         }
     }
 
-    private Object fetchCacheFromOtherMethod(){
+    private Object fetchCacheFromOtherMethod() {
         logger.info("guava cache is timeout, get data from other way");
         return "HAHAHAHA-----GUAVACACHE";
     }
 
     @PostConstruct
-    public void afterPropertiesSet(){
+    public void afterPropertiesSet() {
         cache = CacheBuilder.newBuilder().softValues()
                 .concurrencyLevel(concurrencyLevel)
                 .recordStats().maximumSize(maxmumWeight)
@@ -53,8 +53,8 @@ public class GuavaDemo {
     }
 
     @PreDestroy
-    public void destroy(){
-        if(null != cache){
+    public void destroy() {
+        if (null != cache) {
             cache.cleanUp();
         }
     }
