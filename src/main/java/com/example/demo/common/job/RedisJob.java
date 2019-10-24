@@ -20,7 +20,7 @@ public class RedisJob {
     private static final String LOCK_KEY = "LOCK_KEY";
 
     @Scheduled(cron = "0/3 * * * * ?")
-    public void doJob(){
+    public void doJob() {
         String requestId = UUID.randomUUID().toString();
         boolean isLock = false;
         try {

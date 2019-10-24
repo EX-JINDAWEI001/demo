@@ -19,7 +19,7 @@ public class MongoJob implements SimpleServiceInit {
     private static final String LOCK_KEY = "LOCK_KEY";
 
     @Scheduled(cron = "0 1 * * * ?")
-    public void doJob(){
+    public void doJob() {
         boolean isLock = false;
         try {
             isLock = mongoLockHandler.lock(LOCK_KEY, 30000);
