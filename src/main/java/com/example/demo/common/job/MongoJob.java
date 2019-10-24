@@ -1,6 +1,6 @@
 package com.example.demo.common.job;
 
-import com.example.demo.common.mongo.MongoLockHandler;
+import com.example.demo.component.mongo.MongoLockHandler;
 import com.example.demo.common.system.SimpleServiceInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

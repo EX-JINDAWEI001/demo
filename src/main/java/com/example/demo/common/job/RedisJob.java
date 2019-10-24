@@ -1,6 +1,6 @@
 package com.example.demo.common.job;
 
-import com.example.demo.common.redis.RedisLockHandler;
+import com.example.demo.component.redis.RedisLockHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
