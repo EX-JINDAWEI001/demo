@@ -3,7 +3,6 @@ package com.example.demo.common.config;
 import com.example.demo.common.annotation.Uid;
 import com.example.demo.common.constans.Constants;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -14,13 +13,14 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import java.util.List;
 
 @Configuration
 public class UidConfig implements WebMvcConfigurer {
 
-    @Autowired
+    @Resource
     private UidArgumentResolver uidArgumentResolver;
 
     @Override
@@ -29,7 +29,7 @@ public class UidConfig implements WebMvcConfigurer {
     }
 
     @Component
-    public static class UidArgumentResolver implements HandlerMethodArgumentResolver {
+    private static final class UidArgumentResolver implements HandlerMethodArgumentResolver {
 
         private boolean requestScopeEnable = true;
 
