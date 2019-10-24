@@ -1,6 +1,6 @@
 package com.example.demo.common.aggregate;
 
-import com.example.demo.common.thread.AbstractThread;
+import com.example.demo.component.thread.AbstractThread;
 import com.example.demo.common.vo.AggregateDTO;
 
 import javax.servlet.http.HttpServletRequest;
