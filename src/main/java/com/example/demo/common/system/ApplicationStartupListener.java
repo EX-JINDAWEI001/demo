@@ -1,6 +1,6 @@
 package com.example.demo.common.system;
 
-import com.example.demo.utils.SpringBeansUtil;
+import com.example.demo.common.utils.SpringBeansUtil;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
