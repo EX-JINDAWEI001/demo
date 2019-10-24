@@ -60,7 +60,7 @@ public class MqConsumer {
              */
             consumer.setMessageModel(MessageModel.CLUSTERING);
 
-            consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context)->{
+            consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context) -> {
 //                System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
                 try {
                     for (MessageExt msg : msgs) {
@@ -68,7 +68,7 @@ public class MqConsumer {
                         handler.doService(msg);
                     }
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
-                }catch(Exception e) {
+                } catch (Exception e) {
                     logger.error("rocket mq consumer msg error:", e);
                     //防止重试，失败后不重试！！！
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;

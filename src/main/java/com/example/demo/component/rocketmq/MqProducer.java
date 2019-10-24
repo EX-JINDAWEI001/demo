@@ -26,7 +26,7 @@ public class MqProducer {
      * 消息最大大小，默认4M
      */
     @Value("${rocketmq.producer.maxMessageSize}")
-    private Integer maxMessageSize ;
+    private Integer maxMessageSize;
 
     /**
      * 消息发送超时时间，默认3秒
@@ -41,7 +41,7 @@ public class MqProducer {
     private Integer retryTimesWhenSendFailed;
 
     @Bean
-    public DefaultMQProducer initMqProducer () {
+    public DefaultMQProducer initMqProducer() {
         try {
             DefaultMQProducer producer = new DefaultMQProducer(groupName);
             producer.setNamesrvAddr(namesrvAddr);
