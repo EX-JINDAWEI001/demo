@@ -13,6 +13,6 @@ public class Consumer {
         // Executing remote methods
         String hello = demoService.sayHello("world");
         // Display the call result
-        System.out.println(hello);
+        System.out.println("dubbo rpc result : " + hello);
     }
 }
