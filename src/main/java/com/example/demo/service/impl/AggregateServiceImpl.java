@@ -44,17 +44,17 @@ public class AggregateServiceImpl implements SimpleServiceInit {
      */
     private Map<String, AggregateListener> initUrlMappingMethods() {
         Map<String, AggregateListener> cls = SpringBeansUtil.getApplicationContext().getBeansOfType(AggregateListener.class);
-        for (AggregateListener cl : cls.values()){
+        for (AggregateListener cl : cls.values()) {
             Collection<String> urls = AggregateUtil.getUrlsByRequestMapping(cl.getClass());
-            for(String url : urls){
+            for (String url : urls) {
                 Method method = AggregateUtil.getUrlMappingMethod(cl.getClass(), url);
-                if(method != null){
+                if (method != null) {
                     AggregateDTO dto = new AggregateDTO();
                     dto.setUrl(url);
                     dto.setMethod(method);
                     dto.setInstance(cl);
                     urlMethodMap.put(url, dto);
-                }else{
+                } else {
                     logger.warn("initUrlMappingMethods method is null, url:{}", url);
                 }
             }
@@ -66,7 +66,7 @@ public class AggregateServiceImpl implements SimpleServiceInit {
         AggregateListenerList.getInstance().clear();
         for (String url : methods) {
             AggregateDTO dto = urlMethodMap.get(url);
-            if(dto != null){
+            if (dto != null) {
                 AggregateListenerList.getInstance().addListener(url, dto);
             } else {
                 return false;
@@ -78,11 +78,11 @@ public class AggregateServiceImpl implements SimpleServiceInit {
     public Map<String, Map<String, Object>> aggregate(HttpServletRequest request, HttpServletResponse response) {
 
         Set<String> existUrls = new HashSet<>();
-        for(String url : methods) {
-            if(AggregateListenerList.getInstance().isExisted(url)) {
+        for (String url : methods) {
+            if (AggregateListenerList.getInstance().isExisted(url)) {
                 existUrls.add(url);
             } else {
-                if(initAggregateConfigs()) {
+                if (initAggregateConfigs()) {
                     existUrls.add(url);
                 }
             }
@@ -90,7 +90,7 @@ public class AggregateServiceImpl implements SimpleServiceInit {
 
         Map<String, Map<String, Object>> retMap = new HashMap<>();
         Map<String, Map<String, Object>> sortedMap = new LinkedHashMap<>();
-        if(existUrls.isEmpty()) {
+        if (existUrls.isEmpty()) {
             for (String tName : methods) {
                 sortedMap.put(tName, retMap.get(tName));
             }
@@ -104,7 +104,7 @@ public class AggregateServiceImpl implements SimpleServiceInit {
 
         ChangePropertyThread t = null;
         for (AggregateDTO dto : listener) {
-            t  = new ChangePropertyThread(retMap, dto, request, response);
+            t = new ChangePropertyThread(retMap, dto, request, response);
             pool.execute(t);
         }
 
@@ -136,7 +136,7 @@ public class AggregateServiceImpl implements SimpleServiceInit {
         tempMap.put("resultCode", "000");
         tempMap.put("resultMsg", "SUCCESS");
         tempMap.put("resultData", null);
-        return  tempMap;
+        return tempMap;
     }
 
 }

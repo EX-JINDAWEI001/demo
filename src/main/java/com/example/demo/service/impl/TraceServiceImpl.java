@@ -17,7 +17,7 @@ public class TraceServiceImpl implements TraceService, SimpleServiceInit {
 
     @Override
     public void trace(Map paraMap) {
-        synchronized (synList){
+        synchronized (synList) {
             synList.add(paraMap);
             synList.notifyAll();
         }

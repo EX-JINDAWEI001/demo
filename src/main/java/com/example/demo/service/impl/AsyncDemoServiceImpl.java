@@ -20,7 +20,7 @@ public class AsyncDemoServiceImpl implements AsyncDemoService, SimpleServiceInit
     private AsyncHandler asyncHandler;
 
     @Override
-    public void asyncDemo() throws Exception{
+    public void asyncDemo() throws Exception {
         Future<String> future = doAsyncTask();
         doOtherthing();
         String result = asyncHandler.getFutureResult(future);

@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.component.thread.AbstractThread;
+import com.example.demo.common.thread.AbstractThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +13,7 @@ public class TraceThreadImpl extends AbstractThread {
 
     List<Map<String, Object>> synList;
 
-    public TraceThreadImpl(List<Map<String, Object>> synList){
+    public TraceThreadImpl(List<Map<String, Object>> synList) {
         super(true);
         this.synList = synList;
         logger.info("TraceThreadImpl init thread name is :{}", getName());
@@ -22,7 +22,7 @@ public class TraceThreadImpl extends AbstractThread {
     @Override
     protected void doThreadService() {
         try {
-            synchronized (synList){
+            synchronized (synList) {
                 synList.wait();
             }
             doService();
@@ -36,7 +36,7 @@ public class TraceThreadImpl extends AbstractThread {
      */
     private void doService() {
         logger.info("doThreadService synList is :{}", synList);
-        int a = 1/0;
+        int a = 1 / 0;
     }
 
 }
