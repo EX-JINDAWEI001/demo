@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.common.utils;
 
 import org.apache.commons.dbcp.BasicDataSource;
 

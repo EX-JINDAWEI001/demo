@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.codec.binary.Base64;
