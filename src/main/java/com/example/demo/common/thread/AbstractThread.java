@@ -1,10 +1,10 @@
-package com.example.demo.component.thread;
+package com.example.demo.common.thread;
 
-public abstract class AbstractThread extends Thread{
+public abstract class AbstractThread extends Thread {
 
     private boolean cycle = false;
 
-    public AbstractThread(){
+    public AbstractThread() {
         init(false, this.getClass().getSimpleName() + "_" + System.currentTimeMillis());
     }
 
@@ -12,7 +12,7 @@ public abstract class AbstractThread extends Thread{
         init(cycle, this.getClass().getSimpleName() + "_" + System.currentTimeMillis());
     }
 
-    public void init(boolean cycle, String threadName){
+    public void init(boolean cycle, String threadName) {
         this.cycle = cycle;
         setName(threadName);
         setDaemon(true);

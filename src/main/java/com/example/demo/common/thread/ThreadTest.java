@@ -1,4 +1,4 @@
-package com.example.demo.component.thread;
+package com.example.demo.common.thread;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
