@@ -9,14 +9,14 @@ public enum ResultVoEnum {
 
     private String msg;
 
-    ResultVoEnum(String code, String msg){
+    ResultVoEnum(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public String getMsg(String code){
+    public String getMsg(String code) {
         for (ResultVoEnum voEnum : ResultVoEnum.values()) {
-            if(code.equals(voEnum.getCode())){
+            if (code.equals(voEnum.getCode())) {
                 return voEnum.getMsg();
             }
         }
