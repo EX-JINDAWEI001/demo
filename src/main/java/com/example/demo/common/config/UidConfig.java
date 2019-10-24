@@ -35,7 +35,7 @@ public class UidConfig implements WebMvcConfigurer {
 
         @Override
         public boolean supportsParameter(MethodParameter methodParameter) {
-            if(methodParameter.hasParameterAnnotation(Uid.class)){
+            if (methodParameter.hasParameterAnnotation(Uid.class)) {
                 return true;
             }
             return false;
@@ -44,24 +44,24 @@ public class UidConfig implements WebMvcConfigurer {
         @Override
         public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) {
             Uid annotation = methodParameter.getParameterAnnotation(Uid.class);
-            if(annotation != null){
+            if (annotation != null) {
                 String uid = nativeWebRequest.getHeader(Constants.USER_KEY);
-                if(StringUtils.isBlank(uid)){
+                if (StringUtils.isBlank(uid)) {
                     ServletWebRequest request = (ServletWebRequest) nativeWebRequest;
                     Cookie[] cookies = request.getRequest().getCookies();
-                    if(cookies != null){
+                    if (cookies != null) {
                         for (Cookie cookie : cookies) {
-                            if(Constants.USER_KEY.equals(cookie.getName())){
+                            if (Constants.USER_KEY.equals(cookie.getName())) {
                                 uid = cookie.getValue();
                                 break;
                             }
                         }
                     }
                 }
-                if(requestScopeEnable){
+                if (requestScopeEnable) {
                     nativeWebRequest.setAttribute(Constants.USER_KEY, uid, NativeWebRequest.SCOPE_REQUEST);
                 }
-                if(annotation.isRequired() && uid == null){
+                if (annotation.isRequired() && uid == null) {
                     throw new IllegalArgumentException("user not login!!!");
                 }
                 return uid;
