@@ -61,6 +61,7 @@ public class RedisLockHandler {
 
     /**
      * 仅适用于单机模式，集群模式不支持
+     *
      * @param key
      * @param requestId
      */
@@ -79,11 +80,12 @@ public class RedisLockHandler {
     /**
      * 单机和集群都适用，
      * 但有个条件，单机模式时，必须排除掉io.lettuce包，确保连接使用的是Jedis实例
+     *
      * @param key
      * @param requestId
      * @return
      */
-    public boolean unLock(String key,String requestId) {
+    public boolean unLock(String key, String requestId) {
         // 释放锁的时候，有可能因为持锁之后方法执行时间大于锁的有效期，此时有可能已经被另外一个线程持有锁，所以不能直接删除
         try {
             List<String> keys = new ArrayList<>();
