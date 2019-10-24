@@ -11,7 +11,7 @@ public class DynamicProxy implements InvocationHandler {
 
     private Object realClass;
 
-    public DynamicProxy(Object realClass){
+    public DynamicProxy(Object realClass) {
         super();
         this.realClass = realClass;
     }
@@ -26,6 +26,7 @@ public class DynamicProxy implements InvocationHandler {
 
     /**
      * 动态代理测试
+     *
      * @param args
      */
     public static void main(String[] args) {

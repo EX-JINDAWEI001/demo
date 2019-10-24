@@ -20,6 +20,7 @@ public class StaticProxy implements Actor {
 
     /**
      * 测试静态代理
+     *
      * @param args
      */
     public static void main(String[] args) {
