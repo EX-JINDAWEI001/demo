@@ -14,5 +14,5 @@
     <dubbo:registry address="multicast://224.5.6.7:1234"/>
     <!-- generate proxy for the remote service, then demoService can be used in the same way as the
     local regular interface -->
-    <dubbo:reference id="demoService" check="false" interface="com.example.demo.common.dubbo.DemoService"/>
+    <dubbo:reference id="demoService" check="false" interface="com.example.demo.component.dubbo.DemoService"/>
 </beans>

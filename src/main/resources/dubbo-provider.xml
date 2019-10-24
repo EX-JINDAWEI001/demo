@@ -14,7 +14,7 @@
     <!-- use dubbo protocol to export service on port 20880 -->
     <dubbo:protocol name="dubbo" port="20880"/>
     <!-- service implementation, as same as regular local bean -->
-    <bean id="demoService" class="com.example.demo.common.dubbo.provider.DemoServiceImpl"/>
+    <bean id="demoService" class="com.example.demo.component.dubbo.provider.DemoServiceImpl"/>
     <!-- declare the service interface to be exported -->
-    <dubbo:service interface="com.example.demo.common.dubbo.DemoService" ref="demoService" timeout="200"/>
+    <dubbo:service interface="com.example.demo.component.dubbo.DemoService" ref="demoService" timeout="200"/>
 </beans>
