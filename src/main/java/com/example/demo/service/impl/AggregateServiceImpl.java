@@ -6,7 +6,7 @@ import com.example.demo.common.aggregate.ChangePropertyThread;
 import com.example.demo.common.aggregate.AggregateListener;
 import com.example.demo.common.system.SimpleServiceInit;
 import com.example.demo.common.vo.AggregateDTO;
-import com.example.demo.utils.SpringBeansUtil;
+import com.example.demo.common.utils.SpringBeansUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

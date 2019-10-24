@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.common.constans.Constants;
 import com.example.demo.common.enums.ResultVoEnum;
 import com.example.demo.common.vo.ResultVo;
-import com.example.demo.utils.CookieUtil;
+import com.example.demo.common.utils.CookieUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

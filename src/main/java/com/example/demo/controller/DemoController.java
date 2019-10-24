@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.demo.common.aggregate.AggregateListenerImpl;
 import com.example.demo.common.annotation.Auth;
 import com.example.demo.common.annotation.Uid;
-import com.example.demo.common.guava.GuavaDemo;
+import com.example.demo.component.guava.GuavaDemo;
 import com.example.demo.common.http.HttpClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

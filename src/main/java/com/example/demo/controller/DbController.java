@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.common.enums.ResultVoEnum;
-import com.example.demo.common.redis.RedisHandler;
+import com.example.demo.component.redis.RedisHandler;
 import com.example.demo.common.vo.ResultVo;
-import com.example.demo.utils.DBUtil;
+import com.example.demo.common.utils.DBUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

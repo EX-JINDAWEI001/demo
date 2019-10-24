@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.common.thread.AbstractThread;
+import com.example.demo.component.thread.AbstractThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
