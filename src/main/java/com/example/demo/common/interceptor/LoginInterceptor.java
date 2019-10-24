@@ -20,19 +20,19 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if(!handler.getClass().isAssignableFrom(HandlerMethod.class)){
+        if (!handler.getClass().isAssignableFrom(HandlerMethod.class)) {
             logger.info("handler can not cast to HandlerMethod...");
             return true;
         }
 
-        Auth auth = ((HandlerMethod)handler).getMethod().getAnnotation(Auth.class);
-        if(auth == null){
+        Auth auth = ((HandlerMethod) handler).getMethod().getAnnotation(Auth.class);
+        if (auth == null) {
             logger.info("can not find @Auth in this uri:{}", request.getRequestURI());
             return true;
         }
 
         String admin = auth.user();
-        if(!admin.equals(CookieUtil.getCookieValue(request, Constants.USER_KEY))){
+        if (!admin.equals(CookieUtil.getCookieValue(request, Constants.USER_KEY))) {
             logger.info("not admin, permission denied!");
             response.setStatus(403);
             return false;
