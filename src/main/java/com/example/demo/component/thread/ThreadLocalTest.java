@@ -1,4 +1,4 @@
-package com.example.demo.common.asyn;
+package com.example.demo.component.thread;
 
 public class ThreadLocalTest {
     // 主线程、t1、t2等,各线程均维护一个自己的值,相互之间互不干扰,保证线程安全;
