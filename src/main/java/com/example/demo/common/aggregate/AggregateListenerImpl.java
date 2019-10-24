@@ -17,6 +17,7 @@ public class AggregateListenerImpl implements AggregateListener {
     /**
      * 聚合相关
      * 可提取到父类中去
+     *
      * @param dto
      * @param request
      * @param response
@@ -45,9 +46,9 @@ public class AggregateListenerImpl implements AggregateListener {
             String paramName = null;
             for (int index = 0; index < paramTypes.length; index++) {
                 paramName = paramTypes[index].getName();
-                if (paramName.equals("javax.servlet.http.HttpServletRequest")){
+                if (paramName.equals("javax.servlet.http.HttpServletRequest")) {
                     args[index] = request;
-                } else if (paramName.equals("javax.servlet.http.HttpServletResponse")){
+                } else if (paramName.equals("javax.servlet.http.HttpServletResponse")) {
                     args[index] = response;
                 } else {
                     args[index] = AggregateUtil.getDTO(request, paramTypes[index]);

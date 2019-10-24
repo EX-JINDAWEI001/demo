@@ -17,23 +17,23 @@ public class AggregateListenerList {
 
     private Map<String, AggregateDTO> clm;
 
-    private AggregateListenerList(){
+    private AggregateListenerList() {
         clm = new ConcurrentHashMap<>();
     }
 
-    public synchronized static AggregateListenerList getInstance(){
-        if(cll == null){
+    public synchronized static AggregateListenerList getInstance() {
+        if (cll == null) {
             cll = new AggregateListenerList();
         }
         return cll;
     }
 
-    public Collection<AggregateDTO> getListener(String... urls){
+    public Collection<AggregateDTO> getListener(String... urls) {
         Collection<AggregateDTO> cl = new ArrayList<>();
         if (urls != null && urls.length > 0) {
             for (String url : urls) {
                 url = AggregateUtil.getFullPath(url);
-                if (clm.containsKey(url)){
+                if (clm.containsKey(url)) {
                     cl.add(clm.get(url));
                 } else {
                     logger.warn("getListener url is {}, value is null", url);
@@ -44,11 +44,11 @@ public class AggregateListenerList {
     }
 
     public void addListener(String url, AggregateDTO dto) {
-         url = AggregateUtil.getFullPath(url);
-         clm.put(url, dto);
+        url = AggregateUtil.getFullPath(url);
+        clm.put(url, dto);
     }
 
-    public boolean isExisted (String url) {
+    public boolean isExisted(String url) {
         url = AggregateUtil.getFullPath(url);
         return clm.containsKey(url);
     }

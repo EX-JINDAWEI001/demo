@@ -77,38 +77,38 @@ public class AggregateUtil {
     private static <T extends Object> Field getField(Class<T> clazz, String fieldName) {
         try {
             return clazz.getDeclaredField(fieldName);
-        } catch(Exception e){
+        } catch (Exception e) {
             //ignore
         }
         Class<? super T> sClazz = clazz.getSuperclass();
-        if(!sClazz.toString().equals(Object.class.toString())){
+        if (!sClazz.toString().equals(Object.class.toString())) {
             return getField(sClazz, fieldName);
         }
         return null;
     }
 
-    public static Method getUrlMappingMethod(Class<?> clazz, String reqUrl){
+    public static Method getUrlMappingMethod(Class<?> clazz, String reqUrl) {
         reqUrl = getFullPath(reqUrl);
         RequestMapping a1 = clazz.getAnnotation(RequestMapping.class);
         String classUrl = getUrlByRequestMapping(a1);
 
         Method[] declaredMethods = clazz.getMethods();
-        if (declaredMethods != null){
-            for (Method m : declaredMethods){
+        if (declaredMethods != null) {
+            for (Method m : declaredMethods) {
                 RequestMapping a2 = m.getAnnotation(RequestMapping.class);
-                if(a2 == null){
+                if (a2 == null) {
                     continue;
                 }
                 String methodUrl = getUrlByRequestMapping(a2);
                 String url = null;
-                if(classUrl != null){
-                    if(methodUrl != null){
+                if (classUrl != null) {
+                    if (methodUrl != null) {
                         url = classUrl + methodUrl;
-                    }else{
+                    } else {
                         url = methodUrl;
                     }
                 }
-                if(reqUrl.equals(url)){
+                if (reqUrl.equals(url)) {
                     return m;
                 }
             }
@@ -116,24 +116,24 @@ public class AggregateUtil {
         return null;
     }
 
-    public static Collection<String> getUrlsByRequestMapping(Class<?> clazz){
+    public static Collection<String> getUrlsByRequestMapping(Class<?> clazz) {
         RequestMapping a1 = clazz.getAnnotation(RequestMapping.class);
         String classUrl = getUrlByRequestMapping(a1);
 
         Method[] declaredMethods = clazz.getMethods();
         Collection<String> rets = new ArrayList<>();
-        if (declaredMethods != null){
-            for (Method m : declaredMethods){
+        if (declaredMethods != null) {
+            for (Method m : declaredMethods) {
                 RequestMapping a2 = m.getAnnotation(RequestMapping.class);
-                if(a2 == null){
+                if (a2 == null) {
                     continue;
                 }
                 String methodUrl = getUrlByRequestMapping(a2);
                 String url = null;
-                if(classUrl != null){
-                    if(methodUrl != null){
+                if (classUrl != null) {
+                    if (methodUrl != null) {
                         url = classUrl + methodUrl;
-                    }else{
+                    } else {
                         url = methodUrl;
                     }
                 }
@@ -145,9 +145,9 @@ public class AggregateUtil {
 
     private static String getUrlByRequestMapping(RequestMapping requestmapping) {
         String classUrl = null;
-        if(requestmapping != null){
+        if (requestmapping != null) {
             String[] v1 = requestmapping.value();
-            if(v1 != null && v1.length >= 1){
+            if (v1 != null && v1.length >= 1) {
                 classUrl = v1[0];
             }
         }
@@ -155,14 +155,14 @@ public class AggregateUtil {
     }
 
     public static String getFullPath(String reqUrl) {
-        if(reqUrl != null){
-            if(!reqUrl.startsWith("/")){
+        if (reqUrl != null) {
+            if (!reqUrl.startsWith("/")) {
                 reqUrl = "/" + reqUrl;
             }
-            if(reqUrl.contains("//")){
+            if (reqUrl.contains("//")) {
                 reqUrl = reqUrl.replaceAll("//", "/");
             }
-        }else{
+        } else {
             reqUrl = "";
         }
         return reqUrl;
