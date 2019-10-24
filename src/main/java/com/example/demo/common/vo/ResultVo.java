@@ -8,18 +8,18 @@ public class ResultVo<T> {
 
     private String msg;
 
-    public ResultVo(T body){
+    public ResultVo(T body) {
         super();
         this.body = body;
     }
 
-    public ResultVo(String code, String msg){
+    public ResultVo(String code, String msg) {
         super();
         this.code = code;
         this.msg = msg;
     }
 
-    public ResultVo(String code, String msg, T body){
+    public ResultVo(String code, String msg, T body) {
         super();
         this.code = code;
         this.msg = msg;
