@@ -14,7 +14,7 @@ public class FileController {
     public void getFileInputStream(String fileName, HttpServletResponse response) throws IOException {
         OutputStream out = null;
         BufferedInputStream bis = null;
-        try{
+        try {
             File f = new File("/Users/david/Downloads/项目精华整理");
             if (!f.exists()) {
                 response.sendError(404, "file not found !");

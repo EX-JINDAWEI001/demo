@@ -24,7 +24,7 @@ public class TraceController {
     private TraceService traceService;
 
     @RequestMapping("/trace.do")
-    public ResultVo trace(HttpServletRequest request, HttpServletResponse response, @RequestParam Map paraMap){
+    public ResultVo trace(HttpServletRequest request, HttpServletResponse response, @RequestParam Map paraMap) {
         try {
             logger.info("trace paraMap:{}", paraMap);
             traceService.trace(paraMap);

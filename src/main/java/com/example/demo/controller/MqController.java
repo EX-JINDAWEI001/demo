@@ -28,10 +28,10 @@ public class MqController {
 
     @RequestMapping("/test.do")
     public ResultVo test(HttpServletRequest request) throws InterruptedException,
-                                    RemotingException,
-                                    MQClientException,
-                                    MQBrokerException,
-                                    UnsupportedEncodingException {
+            RemotingException,
+            MQClientException,
+            MQBrokerException,
+            UnsupportedEncodingException {
         Message message = new Message(demoTopic, "TagA",
                 request.getParameter("key"),
                 "hello rocketMQ".getBytes(RemotingHelper.DEFAULT_CHARSET));
