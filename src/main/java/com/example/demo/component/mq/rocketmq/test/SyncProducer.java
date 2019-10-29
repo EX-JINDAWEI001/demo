@@ -1,4 +1,4 @@
-package com.example.demo.component.rocketmq.test;
+package com.example.demo.component.mq.rocketmq.test;
 
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;

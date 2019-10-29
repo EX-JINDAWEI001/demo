@@ -1,4 +1,4 @@
-package com.example.demo.component.rocketmq;
+package com.example.demo.component.mq.rocketmq;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Map;
 
-public class MqConsumer {
+public class RocketConsumer {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

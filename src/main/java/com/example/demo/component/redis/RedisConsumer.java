@@ -1,6 +1,6 @@
 package com.example.demo.component.redis;
 
-import com.example.demo.component.rocketmq.RocketMessageHandler;
+import com.example.demo.component.mq.rocketmq.RocketMessageHandler;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

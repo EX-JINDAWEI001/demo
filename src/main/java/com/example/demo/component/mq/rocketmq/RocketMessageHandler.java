@@ -1,4 +1,4 @@
-package com.example.demo.component.rocketmq;
+package com.example.demo.component.mq.rocketmq;
 
 import org.apache.rocketmq.common.message.MessageExt;
 

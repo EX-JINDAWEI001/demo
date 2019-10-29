@@ -20,7 +20,7 @@
 		<property name="socketTimeout" value="6000"/>
 	</bean>
 
-	<bean id="mqConsumer" class="com.example.demo.component.rocketmq.MqConsumer">
+	<bean id="mqConsumer" class="com.example.demo.component.mq.rocketmq.RocketConsumer">
 		<property name="handlerMap">
 			<map>
 				<entry key="test" value-ref="testConsumer"/>

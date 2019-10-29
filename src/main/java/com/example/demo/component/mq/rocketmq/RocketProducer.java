@@ -1,4 +1,4 @@
-package com.example.demo.component.rocketmq;
+package com.example.demo.component.mq.rocketmq;
 
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MqProducer {
+public class RocketProducer {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
