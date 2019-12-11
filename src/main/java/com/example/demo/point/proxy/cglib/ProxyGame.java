@@ -1,9 +1,5 @@
 package com.example.demo.point.proxy.cglib;
 
-/**
- * @author 黄豪强
- * @create 2019/7/24 8:51
- */
 public class ProxyGame {
 
     public void play() {
@@ -12,7 +8,8 @@ public class ProxyGame {
 
     public static void main(String[] args) {
         CglibProxy cglibProxy = new CglibProxy();
-        ProxyGame playGame = (ProxyGame) cglibProxy.newInstall(new ProxyGame());
-        playGame.play();
+        ProxyGame proxyGame = (ProxyGame) cglibProxy.newInstall(new ProxyGame());
+        proxyGame.play();
     }
+
 }
