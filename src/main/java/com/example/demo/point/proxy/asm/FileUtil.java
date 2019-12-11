@@ -3,8 +3,8 @@ package com.example.demo.point.proxy.asm;
 import java.io.*;
 
 public class FileUtil {
-    private static final String path = "E:\\DAVID\\JAVA\\workspace\\demo\\target\\classes\\com\\example\\demo\\point\\proxy\\asm\\AutoSizeColumnTracker.class";
-//    private static final String path = "E:\\DAVID\\JAVA\\workspace\\demo\\target\\classes\\com\\example\\demo\\point\\proxy\\MyMain.class";
+//    private static final String path = "E:\\DAVID\\JAVA\\workspace\\demo\\target\\classes\\com\\example\\demo\\point\\proxy\\asm\\AutoSizeColumnTracker.class";
+    private static final String path = "/Users/david/Downloads/data/JAVA/IDEA-SPACE/demo/target/classes/com/example/demo/point/proxy/asm/AutoSizeColumnTracker.class";
 
     // 将 class 文件转成 byte 数组（就是下方 MyMain 实体类编译后的 class 文件位置）
     public static byte[] File2Byte() throws IOException {
