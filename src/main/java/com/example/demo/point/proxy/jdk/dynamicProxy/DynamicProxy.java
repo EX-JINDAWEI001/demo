@@ -1,7 +1,7 @@
-package com.example.demo.point.proxy.dynamicProxy;
+package com.example.demo.point.proxy.jdk.dynamicProxy;
 
-import com.example.demo.point.proxy.Actor;
-import com.example.demo.point.proxy.ActorImpl;
+import com.example.demo.point.proxy.jdk.Actor;
+import com.example.demo.point.proxy.jdk.ActorImpl;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

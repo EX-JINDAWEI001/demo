@@ -1,4 +1,6 @@
-package com.example.demo.point.proxy;
+package com.example.demo.point.proxy.jdk;
+
+import com.example.demo.point.proxy.jdk.Actor;
 
 public class ActorImpl implements Actor {
     @Override

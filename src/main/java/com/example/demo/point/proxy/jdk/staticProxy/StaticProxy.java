@@ -1,7 +1,7 @@
-package com.example.demo.point.proxy.staticProxy;
+package com.example.demo.point.proxy.jdk.staticProxy;
 
-import com.example.demo.point.proxy.Actor;
-import com.example.demo.point.proxy.ActorImpl;
+import com.example.demo.point.proxy.jdk.Actor;
+import com.example.demo.point.proxy.jdk.ActorImpl;
 
 public class StaticProxy implements Actor {
 
