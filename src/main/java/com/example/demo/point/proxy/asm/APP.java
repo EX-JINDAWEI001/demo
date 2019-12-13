@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
+ * https://asm.ow2.io/javadoc/
+ * https://www.jianshu.com/p/905be2a9a700
  * https://blog.csdn.net/lijingyao8206/article/details/48085823
  */
 public class APP {
