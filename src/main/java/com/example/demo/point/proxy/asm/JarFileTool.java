@@ -9,82 +9,57 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 
 public class JarFileTool {
-    public void change(String jarPath, String jarFilePath, String ip) throws IOException {
 
-        if (jarPath != null && jarFilePath != null && ip != null) {
-            File file = new File(jarPath);
-            JarFile jarFile = new JarFile(file);// 通过jar包的路径 创建 jar包实例
-            JarEntry entry = jarFile
-                    .getJarEntry("META-INF/config/adapterconfig.json");// 通过某个文件在jar包中的位置来获取这个文件
-
-
-            InputStream input = jarFile.getInputStream(entry); // 创建该文件输入流
-
-            List<JarEntry> lists = new LinkedList<JarEntry>();
-            for (Enumeration<JarEntry> entrys = jarFile.entries(); entrys.hasMoreElements(); ) {
+    public static void doModify(String jarPath, String jarPathNew, String jarFilePath, int defaultCharWidth) throws IOException {
+        if (jarPath != null && jarPathNew != null && jarFilePath != null && defaultCharWidth > 0) {
+            // 通过jar包的路径创建jar包实例;
+            JarFile jarFile = new JarFile(jarPath);
+            // 通过某个文件在jar包中的位置来获取这个文件;
+            JarEntry entry = jarFile.getJarEntry(jarFilePath);
+            // 获取该文件输入流;
+            InputStream input = jarFile.getInputStream(entry);
+            // 获取jar包中的所有entry;
+            List<JarEntry> lists = new LinkedList<>();
+            for (Enumeration<JarEntry> entrys = jarFile.entries(); entrys.hasMoreElements();) {
                 JarEntry jarEntry = entrys.nextElement();
                 lists.add(jarEntry);
             }
-
-            process(lists, entry, jarPath, jarFilePath, input, ip); // 修改文件内容
+            // 调用ASM框架修改class文件;
+            byte[] bytes = ASMTool.modifyClassFile(input, defaultCharWidth);
+            // 将修改后的内容写入jar包中的指定文件;
+            write(jarPathNew, jarFilePath, jarFile, lists, bytes);
             jarFile.close();
-        }
 
+            File oldFile = new File(jarPath);
+            if (oldFile.exists()) {
+                oldFile.delete();
+            }
+            File newFile = new File(jarPathNew);
+            if (newFile.exists()) {
+                newFile.renameTo(oldFile);
+                newFile.delete();
+            }
+        }
     }
 
-    private static void process(List<JarEntry> lists, JarEntry entry,
-                                String jarPath, String jarFilePath, InputStream input, String ip)
-            throws IOException {
-        InputStreamReader isr = new InputStreamReader(input);
-        BufferedReader br = new BufferedReader(isr);
-        StringBuffer buf = new StringBuffer();
-        String line = null;
-
-        while ((line = br.readLine()) != null) {
-            // 此处根据实际需要修改某些行的内容
-            if (line.trim().startsWith(
-                    "host:\"http://127.0.0.1:8080/server.do\"")) {
-                buf.append("host:\"" + ip + "/server.do\",");
-            } else if (line.trim()
-                    .startsWith("host:\"http://127.0.0.1:8080/\"")) {
-                buf.append("host:\"" + ip + "/\",");
-            }
-            // 如果不用修改, 则按原来的内容回写
-            else {
-                buf.append(line);
-            }
-            buf.append(System.getProperty("line.separator"));
-        }
-
-        write(lists, entry, jarPath, buf.toString());// 将修改后的内容写入jar包中的指定文件
-
-        br.close();
-    }
-
-    public static void write(List<JarEntry> lists, JarEntry entry,
-                             String jarPath, String content) throws IOException {
-
-        JarOutputStream jos = null;
-        FileOutputStream fos = new FileOutputStream(jarPath);
-        jos = new JarOutputStream(fos);
-
-
+    private static void write(String jarPathNew, String jarFilePath, JarFile jarFile, List<JarEntry> lists, byte[] bytes) throws IOException {
+        FileOutputStream fos = new FileOutputStream(jarPathNew);
+        JarOutputStream jos = new JarOutputStream(fos);
         try {
 
             for (JarEntry je : lists) {
                 JarEntry newEntry = new JarEntry(je.getName());
-
                 jos.putNextEntry(newEntry);
-
-                if (je.getName().equals("META-INF/config/adapterconfig.json")) {
-                    jos.write(content.getBytes());
+                if (je.getName().equals(jarFilePath)) {
+                    jos.write(bytes);
                     continue;
                 }
-
+                if (jarFile.getInputStream(je) != null) {
+                    byte[] b = new byte[jarFile.getInputStream(je).available()];
+                    jarFile.getInputStream(je).read(b);
+                    jos.write(b);
+                }
             }
-
-            // 将内容写入文件中
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -97,6 +72,13 @@ public class JarFileTool {
                 }
             }
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        String jarPath = "/Users/david/.m2/repository/org/apache/poi/poi-ooxml/4.0.1/poi-ooxml-4.0.1.jar";
+        String jarPathNew = "/Users/david/.m2/repository/org/apache/poi/poi-ooxml/4.0.1/poi-ooxml-4.0.2.jar";
+        String jarFilePath = "org/apache/poi/xssf/streaming/AutoSizeColumnTracker.class";
+        doModify(jarPath, jarPathNew, jarFilePath, 5);
     }
 
 }

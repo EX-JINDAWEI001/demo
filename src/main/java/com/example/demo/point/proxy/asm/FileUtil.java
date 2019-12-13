@@ -12,33 +12,25 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class FileUtil {
-    private static final String path = "E:\\poi-ooxml-4.0.1-原始包\\org\\apache\\poi\\xssf\\streaming\\AutoSizeColumnTracker.class";
-//    private static final String path = "E:\\DAVID\\JAVA\\workspace\\demo\\target\\classes\\com\\example\\demo\\point\\proxy\\asm\\AutoSizeColumnTracker.class";
-//    private static final String path = "/Users/david/Downloads/data/JAVA/IDEA-SPACE/demo/target/classes/com/example/demo/point/proxy/asm/AutoSizeColumnTracker.class";
+    private static final String path = "/Users/david/Downloads/data/JAVA/IDEA-SPACE/demo/target/classes/com/example/demo/point/proxy/asm/MyMain.class";
 
     // 将 class 文件转成 byte 数组（就是下方 MyMain 实体类编译后的 class 文件位置）
     public static byte[] File2Byte() throws IOException {
-        // 获取 class 文件所在的位置
-//        String path = App.getMyMainPath();
-        /*File file = new File(path);
+        File file = new File(path);
         byte[] bytes = new byte[(int) file.length()];
         try (FileInputStream fileInputStream = new FileInputStream(file);) {
             fileInputStream.read(bytes);
-        }*/
-        byte[] bytes = new byte[20480];
-        getJarFile().read(bytes);
+        }
         return bytes;
     }
 
     // 将 byte 数组写进 class 文件
     public static boolean Byte2File(byte[] bytes) throws IOException {
-//        String path = App.getMyMainPath();
-//        File file = new File(path);
-        File file = new File("E:\\AutoSizeColumnTracker.class");
+        File file = new File(path);
         if (!file.exists()) {
             file.createNewFile();
         }
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file);) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             fileOutputStream.write(bytes);
         } catch (Exception e) {
             e.printStackTrace();
