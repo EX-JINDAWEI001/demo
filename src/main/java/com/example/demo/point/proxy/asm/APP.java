@@ -3,12 +3,10 @@ package com.example.demo.point.proxy.asm;
 import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassWriter;
 import jdk.internal.org.objectweb.asm.Opcodes;
-import jdk.internal.org.objectweb.asm.Type;
 import jdk.internal.org.objectweb.asm.tree.*;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Random;
 
 /**
  * https://asm.ow2.io/javadoc/
@@ -30,14 +28,14 @@ public class APP {
         // SKIP_CODE：跳过方法体中的 Code 属性（方法字节码、异常表等）
         cr.accept(cn, ClassReader.EXPAND_FRAMES);
 
-        for (FieldNode fn : cn.fields) {
+        /*for (FieldNode fn : cn.fields) {
             if (fn.name.equals("defaultCharWidth")) {
                 fn.access = Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL + Opcodes.ACC_STATIC;
 //                cn.fields.remove(fn);
 //                cn.fields.add(new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL + Opcodes.ACC_STATIC,"defaultCharWidth","I",null, new Integer(5)));
                 break;
             }
-        }
+        }*/
 
 
         /*for (MethodNode mn : cn.methods) {

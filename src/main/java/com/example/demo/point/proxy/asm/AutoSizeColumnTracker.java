@@ -25,7 +25,6 @@ class AutoSizeColumnTracker {
 
     public AutoSizeColumnTracker(Sheet sheet) {
         this.defaultCharWidth = SheetUtil.getDefaultCharWidth(sheet.getWorkbook());
-//        this.defaultCharWidth = 5;
     }
 
     public SortedSet<Integer> getTrackedColumns() {
