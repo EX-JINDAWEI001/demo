@@ -8,6 +8,7 @@ import jdk.internal.org.objectweb.asm.tree.*;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * https://blog.csdn.net/lijingyao8206/article/details/48085823
@@ -27,21 +28,25 @@ public class APP {
         // SKIP_CODE：跳过方法体中的 Code 属性（方法字节码、异常表等）
         cr.accept(cn, ClassReader.EXPAND_FRAMES);
 
-        /*for (FieldNode fn : cn.fields) {
+        for (FieldNode fn : cn.fields) {
             if (fn.name.equals("defaultCharWidth")) {
-                cn.fields.remove(fn);
-                cn.fields.add(new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL + Opcodes.ACC_STATIC,"defaultCharWidth","I",null, new Integer(5)));
+                fn.access = Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL + Opcodes.ACC_STATIC;
+//                cn.fields.remove(fn);
+//                cn.fields.add(new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL + Opcodes.ACC_STATIC,"defaultCharWidth","I",null, new Integer(5)));
                 break;
             }
         }
 
-        for (MethodNode mn : cn.methods) {
+
+        /*for (MethodNode mn : cn.methods) {
             if ("<init>".equals(mn.name)) {
                 cn.methods.remove(mn);
                 cn.methods.add(new MethodNode(327680, Opcodes.ACC_PUBLIC, "<init>", "(Lorg/apache/poi/ss/usermodel/Sheet;)V", null, null));
                 break;
             }
         }*/
+
+
 
         for (MethodNode mn : cn.methods) {
             if ("<init>".equals(mn.name)) {
@@ -51,43 +56,38 @@ public class APP {
 
 
 
-                /*Iterator<AbstractInsnNode> j = insns.iterator();
-                while (j.hasNext()) {
-                    AbstractInsnNode in = j.next();
+                Iterator<AbstractInsnNode> it = insns.iterator();
+                AbstractInsnNode ain = null;
+                while (it.hasNext()) {
+                    AbstractInsnNode in = it.next();
+
+                    if (in instanceof MethodInsnNode) {
+                        if (((MethodInsnNode) in).name.equals("getDefaultCharWidth") || ((MethodInsnNode) in).name.equals("getWorkbook")) {
+                            it.remove();
+                        }
+                    }
+
+                    if (in instanceof FieldInsnNode) {
+                        if (((FieldInsnNode) in).name.equals("defaultCharWidth")) {
+                            it.remove();
+                        }
+                    }
+
                     int op = in.getOpcode();
                     if ((op >= Opcodes.IRETURN && op <= Opcodes.RETURN) || op == Opcodes.ATHROW) {
+                        // 添加新的方法指令;
                         InsnList il = new InsnList();
-                        il.add(new FieldInsnNode(Opcodes.GETSTATIC, cn.name, "timer", "J"));
-                        il.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J",false));
-                        il.add(new InsnNode(Opcodes.LADD));
-                        il.add(new FieldInsnNode(Opcodes.PUTSTATIC, cn.name, "timer", "J"));
+                        il.add(new LdcInsnNode(5));
+                        il.add(new FieldInsnNode(Opcodes.PUTSTATIC, cn.name, "defaultCharWidth", "I"));
                         insns.insert(in.getPrevious(), il);
                     }
-                }*/
-                InsnList il = new InsnList();
-                il.add(new FieldInsnNode(Opcodes.GETFIELD, cn.name, "defaultCharWidth", "I"));
-//                il.add(new LdcInsnNode(new Integer(5)));
-//                il.add(new InsnNode(Opcodes.ISUB));
-                il.add(new MethodInsnNode(Opcodes.NEW, "java/lang/Integer", "valueOf", "()I", false));
-                il.add(new InsnNode(Opcodes.LSUB));
-                il.add(new FieldInsnNode(Opcodes.PUTFIELD, cn.name, "defaultCharWidth", "I"));
-                insns.insert(il);
-                mn.maxStack += 4;
+                }
 
-                /*InsnList il = new InsnList();
-                il.add(new FieldInsnNode(Opcodes.GETSTATIC, cn.name, "timer", "J"));
-                il.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false));
-                il.add(new InsnNode(Opcodes.LSUB));
-                il.add(new FieldInsnNode(Opcodes.PUTSTATIC, cn.name, "timer", "J"));
-                insns.insert(il);
-                mn.maxStack += 4;*/
 
 
                 break;
             }
         }
-        int acc = Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC;
-        cn.fields.add(new FieldNode(acc, "timer", "J", null, null));
 
         // new ClassWriter(0)：表示我们手动设置。（这里我们用不到）
         ClassWriter cw = new ClassWriter(0);
