@@ -3,6 +3,7 @@ package com.example.demo.point.proxy.asm;
 import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassWriter;
 import jdk.internal.org.objectweb.asm.Opcodes;
+import jdk.internal.org.objectweb.asm.Type;
 import jdk.internal.org.objectweb.asm.tree.*;
 
 import java.io.IOException;
@@ -26,16 +27,21 @@ public class APP {
         // SKIP_CODE：跳过方法体中的 Code 属性（方法字节码、异常表等）
         cr.accept(cn, ClassReader.EXPAND_FRAMES);
 
-        // 新建一个属性
-        // 参数作用域，参数名称，参数类型，参数签名，参数初始值
-        FieldNode fn = new FieldNode(Opcodes.ACC_PRIVATE, "code", "Ljava/lang/String;", null, 5);
-        // 将属性添加到 cn 参数节点中
-        cn.fields.add(fn);
+        /*for (FieldNode fn : cn.fields) {
+            if (fn.name.equals("defaultCharWidth")) {
+                cn.fields.remove(fn);
+                cn.fields.add(new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL + Opcodes.ACC_STATIC,"defaultCharWidth","I",null, new Integer(5)));
+                break;
+            }
+        }
 
-        // 新建一个方法
-//        MethodNode mn = new MethodNode(327680, Opcodes.ACC_PUBLIC, "<init>", "(Lorg/apache/poi/ss/usermodel/Sheet;)V", null, null);
-        // 将方法添加到 cn 参数节点中
-//        cn.methods.add(mn);
+        for (MethodNode mn : cn.methods) {
+            if ("<init>".equals(mn.name)) {
+                cn.methods.remove(mn);
+                cn.methods.add(new MethodNode(327680, Opcodes.ACC_PUBLIC, "<init>", "(Lorg/apache/poi/ss/usermodel/Sheet;)V", null, null));
+                break;
+            }
+        }*/
 
         for (MethodNode mn : cn.methods) {
             if ("<init>".equals(mn.name)) {
@@ -45,28 +51,36 @@ public class APP {
 
 
 
-                Iterator<AbstractInsnNode> j = insns.iterator();
+                /*Iterator<AbstractInsnNode> j = insns.iterator();
                 while (j.hasNext()) {
                     AbstractInsnNode in = j.next();
                     int op = in.getOpcode();
                     if ((op >= Opcodes.IRETURN && op <= Opcodes.RETURN) || op == Opcodes.ATHROW) {
                         InsnList il = new InsnList();
                         il.add(new FieldInsnNode(Opcodes.GETSTATIC, cn.name, "timer", "J"));
-                        il.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J",
-                                false));
+                        il.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J",false));
                         il.add(new InsnNode(Opcodes.LADD));
                         il.add(new FieldInsnNode(Opcodes.PUTSTATIC, cn.name, "timer", "J"));
                         insns.insert(in.getPrevious(), il);
                     }
-                }
+                }*/
                 InsnList il = new InsnList();
+                il.add(new FieldInsnNode(Opcodes.GETFIELD, cn.name, "defaultCharWidth", "I"));
+//                il.add(new LdcInsnNode(new Integer(5)));
+//                il.add(new InsnNode(Opcodes.ISUB));
+                il.add(new MethodInsnNode(Opcodes.NEW, "java/lang/Integer", "valueOf", "()I", false));
+                il.add(new InsnNode(Opcodes.LSUB));
+                il.add(new FieldInsnNode(Opcodes.PUTFIELD, cn.name, "defaultCharWidth", "I"));
+                insns.insert(il);
+                mn.maxStack += 4;
+
+                /*InsnList il = new InsnList();
                 il.add(new FieldInsnNode(Opcodes.GETSTATIC, cn.name, "timer", "J"));
                 il.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false));
                 il.add(new InsnNode(Opcodes.LSUB));
                 il.add(new FieldInsnNode(Opcodes.PUTSTATIC, cn.name, "timer", "J"));
                 insns.insert(il);
-                mn.maxStack += 4;
-
+                mn.maxStack += 4;*/
 
 
                 break;
@@ -75,7 +89,6 @@ public class APP {
         int acc = Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC;
         cn.fields.add(new FieldNode(acc, "timer", "J", null, null));
 
-        // 再 JVM 存在，数栈和局部变量表
         // new ClassWriter(0)：表示我们手动设置。（这里我们用不到）
         ClassWriter cw = new ClassWriter(0);
 
@@ -88,6 +101,6 @@ public class APP {
 
     public static void main(String[] args) throws IOException {
         createField();
-//        AutoSizeColumnTracker ma = new AutoSizeColumnTracker(null);
+        AutoSizeColumnTracker ma = new AutoSizeColumnTracker(null);
     }
 }
