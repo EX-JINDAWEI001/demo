@@ -46,7 +46,7 @@ public class JarFileTool {
         FileOutputStream fos = new FileOutputStream(jarPathNew);
         JarOutputStream jos = new JarOutputStream(fos);
         try {
-
+            InputStream is = null;
             for (JarEntry je : lists) {
                 JarEntry newEntry = new JarEntry(je.getName());
                 jos.putNextEntry(newEntry);
@@ -54,9 +54,10 @@ public class JarFileTool {
                     jos.write(bytes);
                     continue;
                 }
-                if (jarFile.getInputStream(je) != null) {
-                    byte[] b = new byte[jarFile.getInputStream(je).available()];
-                    jarFile.getInputStream(je).read(b);
+                is = jarFile.getInputStream(je);
+                if (is != null) {
+                    byte[] b = new byte[is.available()];
+                    is.read(b);
                     jos.write(b);
                 }
             }
