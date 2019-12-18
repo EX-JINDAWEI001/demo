@@ -38,6 +38,7 @@ public class DynamicProxy implements InvocationHandler {
         );
 
         dynamicProxy.sayHello();
+        dynamicProxy.hello("default method");
     }
 
 }
