@@ -213,15 +213,23 @@ public class JDK10 {
                 .collect(Collectors.toUnmodifiableList());
 
 
+        // 可变集合
         List<Integer> list1 = new ArrayList<>();
         list1.add(1);
         list1.add(2);
         list1.add(3);
 
+        // JDK10
         List<Integer> list2 = List.copyOf(list1);
         System.out.println(list2);
         // java.lang.UnsupportedOperationException
         list2.add(4);
+
+        // JDK9之前
+        list1 = Collections.unmodifiableList(list1);
+        // java.lang.UnsupportedOperationException
+        list1.add(1);
+        System.out.println(list1);
     }
 
 
