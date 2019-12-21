@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
  *
  * https://blog.csdn.net/cun_chen/article/details/82807552
  * https://my.oschina.net/mdxlcj/blog/3010342
+ * http://cr.openjdk.java.net/~iris/se/11/latestSpec/
  *
  * jdk.snmp模块提供了JVM SNMP监视和管理的实现。JVM的SNMP监视支持已在JDK 10（JDK-8194164）中弃用，并在JDK 11（JDK-8199295）中已删除。
  */
