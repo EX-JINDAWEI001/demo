@@ -21,21 +21,7 @@ import java.util.concurrent.ExecutionException;
 public class JDK11 {
 
     /**
-     * 1、增强局部变量类型推断var
-     * https://blog.csdn.net/weixin_34117522/article/details/91386815
-     */
-    public static void varTest() {
-
-    }
-
-
-    /**
-     * 嵌套类可见性支持
-     */
-
-
-    /**
-     * 2、增加String实用的API
+     * 1、增加String实用的API
      */
     public void strTest() {
         String str = "woshidage";
@@ -58,7 +44,7 @@ public class JDK11 {
 
 
     /**
-     * 3、移除和废弃的内容
+     * 2、移除和废弃的内容
      *
      * 3.1 移除项
      * 1、移除了com.sun.awt.AWTUtilities
@@ -86,7 +72,7 @@ public class JDK11 {
      */
 
     /**
-     * 4、HttpClient加强方法
+     * 3、HttpClient加强方法
      *
      * 现在 Java 自带了这个 HTTP Client API，我们以后还有必要用 HttpClient 或 OKHttp工具包吗？
      *
@@ -113,21 +99,21 @@ public class JDK11 {
     }
 
     /**
-     * 6、删除JavaEE and CORBA 模块
+     * 4、删除JavaEE and CORBA 模块
      *
      * 在java11中移除了不太使用的JavaEE模块和CORBA技术，在java11中将java9标记废弃的Java EE及CORBA模块移除掉
      */
 
 
     /**
-     * 7.废弃 Nashorn JavaScript Engine
+     * 5.废弃 Nashorn JavaScript Engine
      *
      * 废除Nashorn javascript引擎，在后续版本准备移除掉，有需要的可以考虑使用GraalVM。
      */
 
 
     /**
-     * 8、废弃 Pack200 Tools and API
+     * 6、废弃 Pack200 Tools and API
      *
      * 这个工具能对普通的jar文件进行高效压缩，据说如果jar包都是class类可以压缩到1/9的大小
      * 因为Pack200主要是用来压缩jar包的工具，由于网络下载速度的提升以及java9引入模块化系统之后不再依赖Pack200，因此这个版本将其移除掉。
@@ -135,7 +121,7 @@ public class JDK11 {
 
 
     /**
-     * 9、新的Epsilon垃圾收集器
+     * 7、新的Epsilon垃圾收集器
      *
      * JDK上对这个特性的描述是: 开发一个处理内存分配但不实现任何实际内存回收机制的GC, 一旦可用堆内存用完, JVM就会退出.
      * 用法 : -XX:+UnlockExperimentalVMOptions -XX:+UseEpsilonGC
@@ -143,7 +129,7 @@ public class JDK11 {
 
 
     /**
-     * 10、ZGC
+     * 8、ZGC
      *
      * 这应该是JDK11最为瞩目的特性, 没有之一. 但是后面带了Experimental, 说明这还不建议用到生产环境。
      *
@@ -161,7 +147,7 @@ public class JDK11 {
 
 
     /**
-     * 11、支持G1上的并行完全垃圾收集
+     * 9、支持G1上的并行完全垃圾收集
      *
      * 对于 G1 GC，相比于 JDK 8，升级到 JDK 11 即可免费享受到：并行的 Full GC，快速的 CardTable 扫描，自适应的堆占用比例调整（IHOP），在并发标记阶段的类型卸载等等。
      * 这些都是针对 G1 的不断增强，其中串行 Full GC 等甚至是曾经被广泛诟病的短板，你会发现 GC 配置和调优在 JDK11 中越来越方便。
