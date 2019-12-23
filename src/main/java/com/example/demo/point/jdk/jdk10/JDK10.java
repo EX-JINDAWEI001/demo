@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
  */
 public class JDK10 {
     /**
+     * https://blog.csdn.net/weixin_34117522/article/details/91386815
+     *
      * 1. 局部变量类型推断;
      *
      * 局部变量类型推断将引入"var"关键字，也就是你可以随意定义变量而不必指定变量的类型;
@@ -181,7 +183,7 @@ public class JDK10 {
 
 
     /**
-     * Optional.orElseThrow（）方法
+     * 13.Optional.orElseThrow（）方法
      *
      * Optional.get() 是一个容易误导程序员的方法，它实际上有可能抛出 NoSuchElementException 运行时异常，
      * 因此需要一个语义明确的方法来帮助程序员清楚的认识到自己在做什么。
@@ -191,7 +193,7 @@ public class JDK10 {
 
 
     /**
-     * 不可变集合
+     * 14.不可变集合
      */
     public static void unmodifiable() {
         // JDK9 不可变集合;
@@ -231,6 +233,4 @@ public class JDK10 {
         list1.add(1);
         System.out.println(list1);
     }
-
-
 }
