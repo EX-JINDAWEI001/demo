@@ -14,7 +14,7 @@ public interface Actor {
     }
 
     // JDK9 私有方法
-    private void run() {
+    /*private void run() {
         System.out.println("跑起来!!!");
-    }
+    }*/
 }
