@@ -1,9 +1,8 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.common.asyn.AsyncTask;
+import com.example.demo.common.asyn.AsyncHandler;
 import com.example.demo.common.system.SimpleServiceInit;
 import com.example.demo.service.AsyncDemoService;
-import com.example.demo.common.asyn.AsyncHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +27,13 @@ public class AsyncDemoServiceImpl implements AsyncDemoService, SimpleServiceInit
     }
 
     private Future<String> doAsyncTask() {
-        return asyncHandler.executor.submit(new AsyncTask<String>() {
-            @Override
-            public String doTask() {
-                try {
-                    Thread.sleep(2000);
-                    return "AsyncTask is done !!!";
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return "AsyncTask is interrupted !!!";
-                }
+        return asyncHandler.executor.submit(() -> {
+            try {
+                Thread.sleep(2000);
+                return "AsyncTask is done !!!";
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                return "AsyncTask is interrupted !!!";
             }
         });
     }
