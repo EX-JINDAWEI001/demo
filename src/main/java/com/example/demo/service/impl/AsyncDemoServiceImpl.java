@@ -13,7 +13,7 @@ import java.util.concurrent.Future;
 @Service
 public class AsyncDemoServiceImpl implements AsyncDemoService, SimpleServiceInit {
 
-    Logger logger = LoggerFactory.getLogger(AsyncDemoServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AsyncDemoServiceImpl.class);
 
     @Autowired
     private AsyncHandler asyncHandler;
@@ -32,7 +32,7 @@ public class AsyncDemoServiceImpl implements AsyncDemoService, SimpleServiceInit
                 Thread.sleep(2000);
                 return "AsyncTask is done !!!";
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
                 return "AsyncTask is interrupted !!!";
             }
         });
@@ -44,7 +44,7 @@ public class AsyncDemoServiceImpl implements AsyncDemoService, SimpleServiceInit
 
     @Override
     public void init() {
-        System.out.println("======================init method======================");
+        logger.info("======================init method======================");
     }
 
 }
