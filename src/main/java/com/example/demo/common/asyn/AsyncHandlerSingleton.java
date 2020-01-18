@@ -4,6 +4,7 @@ import java.util.concurrent.*;
 
 /**
  * jdw2
+ * jdw1
  * 通过单例模式初始化线程池
  */
 public class AsyncHandlerSingleton {
