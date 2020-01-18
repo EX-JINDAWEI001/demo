@@ -46,7 +46,7 @@ public class AsyncHandlerSingleton {
         return future.get(200, TimeUnit.MILLISECONDS);
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         AsyncHandlerSingleton.getInstance().executor.submit(() -> {
             try {
                 System.out.println("啦啦啦啦啦啦啦啦啦啦啦111111。。。。。。。。");
@@ -72,5 +72,5 @@ public class AsyncHandlerSingleton {
                 e.printStackTrace();
             }
         });
-    }
+    }*/
 }
