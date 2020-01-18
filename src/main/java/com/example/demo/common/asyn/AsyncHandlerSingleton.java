@@ -3,6 +3,7 @@ package com.example.demo.common.asyn;
 import java.util.concurrent.*;
 
 /**
+ * jdw1
  * 通过单例模式初始化线程池
  */
 public class AsyncHandlerSingleton {
