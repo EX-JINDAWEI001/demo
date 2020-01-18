@@ -41,7 +41,8 @@ public class AsyncHandlerSingleton {
         }
         return instance;
     }
-    
+
+    // branch-jdw2;
     public static <T> T getFutureResult(Future<T> future) throws InterruptedException, ExecutionException, TimeoutException {
         return future.get(200, TimeUnit.MILLISECONDS);
     }
