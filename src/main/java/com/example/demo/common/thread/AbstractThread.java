@@ -4,10 +4,6 @@ public abstract class AbstractThread extends Thread {
 
     private boolean cycle = false;
 
-    public AbstractThread() {
-        init(false, this.getClass().getSimpleName() + "_" + System.currentTimeMillis());
-    }
-
     public AbstractThread(boolean cycle) {
         init(cycle, this.getClass().getSimpleName() + "_" + System.currentTimeMillis());
     }

@@ -1,9 +1,9 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.common.aggregate.AggregateHandler;
 import com.example.demo.common.aggregate.AggregateListenerList;
 import com.example.demo.common.aggregate.AggregateUtil;
-import com.example.demo.common.aggregate.ChangePropertyThread;
-import com.example.demo.common.aggregate.AggregateListener;
+import com.example.demo.common.aggregate.InvokeThread;
 import com.example.demo.common.system.SimpleServiceInit;
 import com.example.demo.common.vo.AggregateDTO;
 import com.example.demo.common.utils.SpringBeansUtil;
@@ -23,7 +23,7 @@ public class AggregateServiceImpl implements SimpleServiceInit {
 
     private static final Logger logger = LoggerFactory.getLogger(AggregateServiceImpl.class);
 
-    private Map<String, AggregateDTO> urlMethodMap = new HashMap();
+    private Map<String, AggregateDTO> urlMethodMap = new HashMap<>();
 
     private ExecutorService pool;
 
@@ -40,11 +40,11 @@ public class AggregateServiceImpl implements SimpleServiceInit {
     }
 
     /**
-     * 将受监听的所有的url和method信息加载到urlMethodMap中
+     * 将目标接口的url和method信息加载到urlMethodMap中
      */
-    private Map<String, AggregateListener> initUrlMappingMethods() {
-        Map<String, AggregateListener> cls = SpringBeansUtil.getApplicationContext().getBeansOfType(AggregateListener.class);
-        for (AggregateListener cl : cls.values()) {
+    private Map<String, AggregateHandler> initUrlMappingMethods() {
+        Map<String, AggregateHandler> cls = SpringBeansUtil.getApplicationContext().getBeansOfType(AggregateHandler.class);
+        for (AggregateHandler cl : cls.values()) {
             Collection<String> urls = AggregateUtil.getUrlsByRequestMapping(cl.getClass());
             for (String url : urls) {
                 Method method = AggregateUtil.getUrlMappingMethod(cl.getClass(), url);
@@ -102,9 +102,9 @@ public class AggregateServiceImpl implements SimpleServiceInit {
             return null;
         }
 
-        ChangePropertyThread t = null;
+        InvokeThread t;
         for (AggregateDTO dto : listener) {
-            t = new ChangePropertyThread(retMap, dto, request, response);
+            t = new InvokeThread(retMap, dto, request, response);
             pool.execute(t);
         }
 

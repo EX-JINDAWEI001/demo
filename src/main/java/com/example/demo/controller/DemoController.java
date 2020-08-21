@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.example.demo.common.aggregate.AggregateListenerImpl;
+import com.example.demo.common.aggregate.AggregateHandler;
 import com.example.demo.common.annotation.Auth;
 import com.example.demo.common.annotation.Uid;
 import com.example.demo.component.guava.GuavaDemo;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 @RequestMapping("/demo")
 @RestController
-public class DemoController extends AggregateListenerImpl {
+public class DemoController extends AggregateHandler {
 
     private Logger logger = LoggerFactory.getLogger(DemoController.class);
 

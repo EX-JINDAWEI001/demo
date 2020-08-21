@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-public class ChangePropertyThread extends AbstractThread {
+public class InvokeThread extends AbstractThread {
 
     private Map<String, Map<String, Object>> retMap;
 
@@ -17,7 +17,7 @@ public class ChangePropertyThread extends AbstractThread {
 
     private HttpServletResponse response;
 
-    public ChangePropertyThread(Map<String, Map<String, Object>> retMap, AggregateDTO dto,
+    public InvokeThread(Map<String, Map<String, Object>> retMap, AggregateDTO dto,
                                 HttpServletRequest request, HttpServletResponse response) {
         super(false);
         this.retMap = retMap;
@@ -34,7 +34,7 @@ public class ChangePropertyThread extends AbstractThread {
             Thread.currentThread().interrupt();
         }
 
-        Map<String, Object> ret = ((AggregateListener) dto.getInstance()).changeProperty(dto, request, response);
+        Map<String, Object> ret = ((AggregateHandler) dto.getInstance()).doInvoke(dto, request, response);
         synchronized (retMap) {
             retMap.put(dto.getUrl(), ret);
             retMap.notifyAll();
