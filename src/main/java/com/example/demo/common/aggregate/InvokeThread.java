@@ -36,8 +36,10 @@ public class InvokeThread extends AbstractThread {
 
         Map<String, Object> ret = ((AggregateHandler) dto.getInstance()).doInvoke(dto, request, response);
         synchronized (retMap) {
+            System.out.println("notify 前" + Thread.currentThread().getName());
             retMap.put(dto.getUrl(), ret);
             retMap.notifyAll();
+            System.out.println("notify 后");
         }
     }
 }
