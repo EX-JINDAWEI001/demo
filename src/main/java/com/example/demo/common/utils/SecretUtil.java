@@ -5,7 +5,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -372,16 +371,16 @@ public class SecretUtil {
 
 
     public static String getSignature(Map<String, Object> paramMap, String partnerId) {
-        String paraStr = ASCIIHandler(paramMap);
+        String paraStr = SortByASCII(paramMap);
         return sha1_1(partnerId + paraStr);
 //        return RSA_Sign(partnerId + paraStr, keyMap.get(1));
     }
 
-    private static String ASCIIHandler(Map<String, Object> paramMap) {
+    private static String SortByASCII(Map<String, Object> paramMap) {
         if (paramMap.isEmpty()) {
             return null;
         }
-        List<String> paramNames = getParamNames(paramMap);
+        List<String> paramNames = new ArrayList<>(paramMap.keySet());
         Collections.sort(paramNames);
         return splitParams(paramNames, paramMap);
     }
@@ -389,17 +388,9 @@ public class SecretUtil {
     private static String splitParams(List<String> paramNames, Map<String, Object> maps) {
         StringBuilder sb = new StringBuilder();
         for (String paramName : paramNames) {
-            sb.append(paramName).append(String.valueOf(maps.get(paramName)));
+            sb.append(paramName).append(maps.get(paramName));
         }
         return sb.toString();
-    }
-
-    private static List<String> getParamNames(Map<String, Object> maps) {
-        List<String> paramNames = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : maps.entrySet()) {
-            paramNames.add(entry.getKey());
-        }
-        return paramNames;
     }
 
 }
