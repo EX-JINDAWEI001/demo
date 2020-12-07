@@ -2,6 +2,7 @@ package com.example.demo.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -71,14 +72,36 @@ public class SecretUtil {
         }
     }
 
+    public static String md5(String str) {
+        try {
+            MessageDigest sha = MessageDigest.getInstance("MD5");
+            sha.update(str.getBytes(CHARSET));
+            byte[] md = sha.digest();
+
+            StringBuilder buf = new StringBuilder();
+            String shaHex = null;
+            for (int i = 0; i < md.length; i++) {
+                shaHex = Integer.toHexString(md[i] & 0xff);
+                if (shaHex.length() < 2) {
+                    buf.append(0);
+                }
+                buf.append(shaHex);
+            }
+            return buf.toString();
+        } catch (Exception e) {
+            logger.error("sha1_2 error: ", e);
+            return null;
+        }
+    }
+
     //3DES==============================================================================================3DES\\
     public static String DESEncode(String content, String key) {
         try {
             SecretKey secKey = new SecretKeySpec(build3DesKey(key), "DESede"); //生成密钥
-            Cipher c1 = Cipher.getInstance("DESede");   //实例化负责加解密的Cipher工具类
-            c1.init(Cipher.ENCRYPT_MODE, secKey);   //初始化为加密模式
+            Cipher cipher = Cipher.getInstance("DESede");   //实例化负责加解密的Cipher工具类
+            cipher.init(Cipher.ENCRYPT_MODE, secKey);   //初始化为加密模式
 
-            byte[] secArr = c1.doFinal(content.getBytes(CHARSET));
+            byte[] secArr = cipher.doFinal(content.getBytes(CHARSET));
             return new String(Base64.encodeBase64(secArr));
 //            return new BASE64Encoder().encode(secArr);
 //            return new Base64().encodeToString(secArr);
@@ -91,12 +114,12 @@ public class SecretUtil {
     public static String DESDecode(String content, String key) {
         try {
             SecretKey secKey = new SecretKeySpec(build3DesKey(key), "DESede"); //生成密钥
-            Cipher c1 = Cipher.getInstance("DESede");   //实例化负责加解密的Cipher工具类
-            c1.init(Cipher.DECRYPT_MODE, secKey);   //初始化为解密模式
+            Cipher cipher = Cipher.getInstance("DESede");   //实例化负责加解密的Cipher工具类
+            cipher.init(Cipher.DECRYPT_MODE, secKey);   //初始化为解密模式
 
-            byte[] secArr = c1.doFinal(Base64.decodeBase64(content));
-//            byte[] secArr = c1.doFinal(new BASE64Decoder().decodeBuffer(content));
-//            byte[] secArr = c1.doFinal(new Base64().decode(content.getBytes(CHARSET)));
+            byte[] secArr = cipher.doFinal(Base64.decodeBase64(content));
+//            byte[] secArr = cipher.doFinal(new BASE64Decoder().decodeBuffer(content));
+//            byte[] secArr = cipher.doFinal(new Base64().decode(content.getBytes(CHARSET)));
             return new String(secArr, CHARSET);
         } catch (Exception e) {
             logger.error("DESDecode error:", e);
@@ -123,12 +146,44 @@ public class SecretUtil {
 
     private static final String AES_CBC = "AES/CBC/PKCS5Padding";
 
+    private static final String AES_256_ECB = "AES/ECB/PKCS7Padding";
+
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
+
+    public static String AES_Encrypt_WX(String content, String key) {
+        try {
+            SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(CHARSET), "AES");
+            Cipher cipher = Cipher.getInstance(AES_256_ECB, "BC");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            byte[] encrypt = cipher.doFinal(content.getBytes(CHARSET));
+            return new String(Base64.encodeBase64(encrypt), CHARSET);
+        } catch (Exception e) {
+            logger.error("AES_Encrypt_WX error: ", e);
+            return null;
+        }
+    }
+
+    public static String AES_Decrypt_WX(byte[] content, String key) {
+        try {
+            SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(CHARSET), "AES");
+            Cipher cipher = Cipher.getInstance(AES_256_ECB, "BC");
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+            byte[] decrypt = cipher.doFinal(content);
+            return new String(decrypt, CHARSET);
+        } catch (Exception e) {
+            logger.error("AES_Decrypt_WX error: ", e);
+            return null;
+        }
+    }
+
     public static String AES_Encrypt1(String content, String key) {
         try {
             SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(CHARSET), "AES");
-            Cipher c1 = Cipher.getInstance(AES_ECB);
-            c1.init(Cipher.ENCRYPT_MODE, keySpec);
-            byte[] encrypt = c1.doFinal(content.getBytes(CHARSET));
+            Cipher cipher = Cipher.getInstance(AES_ECB);
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+            byte[] encrypt = cipher.doFinal(content.getBytes(CHARSET));
             return new String(Base64.encodeBase64(encrypt), CHARSET);
         } catch (Exception e) {
             logger.error("AES_Encrypt1 error: ", e);
@@ -139,9 +194,9 @@ public class SecretUtil {
     public static String AES_Decrypt1(String content, String key) {
         try {
             SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(CHARSET), "AES");
-            Cipher c1 = Cipher.getInstance(AES_ECB);
-            c1.init(Cipher.DECRYPT_MODE, keySpec);
-            byte[] decrypt = c1.doFinal(Base64.decodeBase64(content));
+            Cipher cipher = Cipher.getInstance(AES_ECB);
+            cipher.init(Cipher.DECRYPT_MODE, keySpec);
+            byte[] decrypt = cipher.doFinal(Base64.decodeBase64(content));
             return new String(decrypt, CHARSET);
         } catch (Exception e) {
             logger.error("AES_Decrypt1 error: ", e);
@@ -154,10 +209,10 @@ public class SecretUtil {
             SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(CHARSET), "AES");
             IvParameterSpec ivSpec = new IvParameterSpec(iv.getBytes(CHARSET));
 
-            Cipher c1 = Cipher.getInstance(AES_CBC);
-            c1.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+            Cipher cipher = Cipher.getInstance(AES_CBC);
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 
-            byte[] encrypt = c1.doFinal(content.getBytes(CHARSET));
+            byte[] encrypt = cipher.doFinal(content.getBytes(CHARSET));
             return new String(Base64.encodeBase64(encrypt), CHARSET);
         } catch (Exception e) {
             logger.error("AES_Encrypt2 error: ", e);
@@ -170,10 +225,10 @@ public class SecretUtil {
             SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(CHARSET), "AES");
             IvParameterSpec ivSpec = new IvParameterSpec(iv.getBytes(CHARSET));
 
-            Cipher c1 = Cipher.getInstance(AES_CBC);
-            c1.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+            Cipher cipher = Cipher.getInstance(AES_CBC);
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
 
-            byte[] decrypt = c1.doFinal(Base64.decodeBase64(content));
+            byte[] decrypt = cipher.doFinal(Base64.decodeBase64(content));
             return new String(decrypt, CHARSET);
         } catch (Exception e) {
             logger.error("AES_Decrypt2 error: ", e);
@@ -183,8 +238,8 @@ public class SecretUtil {
 
     public static String AES_Encrypt3(String content, String key, String iv) {
         try {
-            Cipher c1 = Cipher.getInstance(AES_CBC);
-            int blockSize = c1.getBlockSize();
+            Cipher cipher = Cipher.getInstance(AES_CBC);
+            int blockSize = cipher.getBlockSize();
             byte[] dataBytes = content.getBytes(CHARSET);
             int dataLength = dataBytes.length;
             if (dataLength % blockSize != 0) {
@@ -195,9 +250,9 @@ public class SecretUtil {
 
             SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(CHARSET), "AES");
             IvParameterSpec ivSpec = new IvParameterSpec(iv.getBytes(CHARSET));
-            c1.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 
-            byte[] encrypt = c1.doFinal(plaintext);
+            byte[] encrypt = cipher.doFinal(plaintext);
             return new String(Base64.encodeBase64(encrypt), CHARSET);
         } catch (Exception e) {
             logger.error("AES_Encrypt3 error: ", e);
@@ -367,8 +422,10 @@ public class SecretUtil {
         System.out.println(sign);
         System.out.println(RSA_Verify(rsaen, keyMap.get(0), sign));
 
-    }
+        String content = "wvm81DNoEyMiBbF7gjHh51JWMpdVsxwGuQ/Ej4DcGR408/bJzsu0zsCGcm9t3OMuDCoI+oXQKZBX/iBFo/+TfOf0w8YMbeDZELHUBShN+Pw7It0rzsBY0/ScN9EFRAg9uFE5AKFzlEMdDnHdEk5IX8bn+q/iNyuZ20Zfatx/n1u1r/+IDKtrxUDyPpRxzeHlc0eIzN7tNfnW+BjWenmlK+/qzqb58s8VEJ8vwKjXnIuBRUnt8IXouCqR4pZjQ7VY/pasfJcb8wBvCMOJ8szpoZv2kB0UglhQ/f8VgMNVzSd7Jlbr/Gvikb4reFPoZuSQgCkL0wcT1txmPqF2hNd7Ct91Gp3CYwjGo1DSIl6UVedPYb9XRh2vhUkmn1L9ri4VtXvKxMZeda+gzcpzFkQtroQUHCtKvWYyDUzTIDT2uLvyusZLPrhI1t3r7Gqu4b7J9aGADUuCh4CmeoR5eIcOoagtiNcrd6H5HBnYuqHCw6mf4/9/+3E60SOkiTr2hhijwkaqif7r2jpwluHBZ2bxQ896Lnlh7WiwFZ6KxVL9TwKTUa0EvMW+xcT7Sh4hawjgEuZCzOjixNl1tcfqwBGxJDMHODTV2GBX7uHntPCGfiMbuuU/0CVn5VGuJETQXmOM7KT6kaK22TCJj7d3yw7dtROSJ2WIg7O5ieodfHYSrBlw3ZLnaLUx63K0BcJCrNUYJ8tO28x3swgVrNZHcQccsR/35rdrUuyd2E1CCdFW2/XnniY8ZJSrd33Xy+9dCjR5almlJwyLWAXHTIQJHMQjs5yhBNL9PJRYk9lxb3DulIAS37fHEzKiuNm8aA46SMz7EsDnTYdkPA7I+vf3GED6IiKeTjLD4z/LBN2FvUXxwmInaGAZJjZeWUa3cUSJCR+hyxRvAcUwWr9w1Yu+KHqXIAbMdrPYO+SCnK9nDBOVO/JL62Nb5gV5xpAIpeJW9dvABDPpEJyxtPTmL3J+5KPF0fNt678eLbYHJdp731j3JojVYvNx++eDJGg9LxLT88ECqFX1II+x2FiCSt2MG2JTR1OlWCtOMrpO1e5lzg0ScSU=";
+        System.out.println(AES_Decrypt_WX(Base64.decodeBase64(content), md5("3c6e0b8a9c15224a8228b9a98ca1531d")));
 
+    }
 
     public static String getSignature(Map<String, Object> paramMap, String partnerId) {
         String paraStr = SortByASCII(paramMap);
