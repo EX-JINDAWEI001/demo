@@ -4,6 +4,8 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.icepdf.core.pobjects.Document;
 import org.icepdf.core.pobjects.Page;
 import org.icepdf.core.util.GraphicsRenderingHints;
+import sun.misc.BASE64Encoder;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -143,21 +145,22 @@ public class ImageUtil {
      * @param perScale 每次递归的压缩比, 该值大于1, 越接近1结果越精确
      * @throws IOException
      */
-    private static void cut(byte[] bytes, long desSize, double perScale) throws IOException {
+    private static String cut(byte[] bytes, long desSize, double perScale) throws IOException {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
             BufferedImage bi = ImageIO.read(new ByteArrayInputStream(bytes));
             if (bytes.length < desSize) {
-                File imageFile = new File("E:\\test123.png");
-                ImageIO.write(bi, "png", imageFile);
-                return;
+                File imageFile = new File("E:\\test123.jpg");
+                ImageIO.write(bi, "jpg", imageFile);
+                BASE64Encoder encoder = new BASE64Encoder();
+                return "data:image/jpg;base64," + encoder.encode(bytes);
             }
             int srcWdith = bi.getWidth();
             int srcHeigth = bi.getHeight();
             int desWidth = new BigDecimal(srcWdith).divide(new BigDecimal(perScale), BigDecimal.ROUND_HALF_UP).intValue();
             int desHeight = new BigDecimal(srcHeigth).divide(new BigDecimal(perScale), BigDecimal.ROUND_HALF_UP).intValue();
-            Thumbnails.of(bi).size(desWidth, desHeight).outputQuality(1.0).outputFormat("png").toOutputStream(baos);
+            Thumbnails.of(bi).size(desWidth, desHeight).outputQuality(1.0).outputFormat("jpg").toOutputStream(baos);
             byte[] bytess = baos.toByteArray();
-            cut(bytess, desSize, perScale);
+            return cut(bytess, desSize, perScale);
         }
     }
 
@@ -171,7 +174,7 @@ public class ImageUtil {
         InputStream is = new FileInputStream(new java.io.File("E:\\test.jpg"));
         byte[] bytes = new byte[is.available()];
         is.read(bytes);
-        cut(bytes, 1024 * 1024, 1.2);
-        System.out.println(111);
+        String base64 = cut(bytes, 1024 * 1024, 1.2);
+        System.out.println(base64);
     }
 }
