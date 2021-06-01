@@ -7,6 +7,7 @@ import org.icepdf.core.util.GraphicsRenderingHints;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -135,10 +136,42 @@ public class ImageUtil {
         ImageIO.write(imageResult, FORMAT_NAME, imageFile);// 写图片
     }
 
+    /**
+     * 将图片压缩到指定大小以下
+     * @param bytes
+     * @param desSize
+     * @param perScale 每次递归的压缩比, 该值大于1, 越接近1结果越精确
+     * @throws IOException
+     */
+    private static void cut(byte[] bytes, long desSize, double perScale) throws IOException {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+            BufferedImage bi = ImageIO.read(new ByteArrayInputStream(bytes));
+            if (bytes.length < desSize) {
+                File imageFile = new File("E:\\test123.png");
+                ImageIO.write(bi, "png", imageFile);
+                return;
+            }
+            int srcWdith = bi.getWidth();
+            int srcHeigth = bi.getHeight();
+            int desWidth = new BigDecimal(srcWdith).divide(new BigDecimal(perScale), BigDecimal.ROUND_HALF_UP).intValue();
+            int desHeight = new BigDecimal(srcHeigth).divide(new BigDecimal(perScale), BigDecimal.ROUND_HALF_UP).intValue();
+            Thumbnails.of(bi).size(desWidth, desHeight).outputQuality(1.0).outputFormat("png").toOutputStream(baos);
+            byte[] bytess = baos.toByteArray();
+            cut(bytess, desSize, perScale);
+        }
+    }
+
     public static void main(String[] args) throws Exception {
-        String source = "E:/DAVID/JAVA/workspace/demo/EP201900000008983015.pdf";
-        String target = "E:/DAVID/JAVA/workspace/demo/";
-        pdfToImageZip(source, target + "def.zip");
-        pdfToImageLong(source, target + "def.png");
+//        String source = "E:/DAVID/JAVA/workspace/demo/EP201900000008983015.pdf";
+//        String target = "E:/DAVID/JAVA/workspace/demo/";
+//        pdfToImageZip(source, target + "def.zip");
+//        pdfToImageLong(source, target + "def.png");
+
+        // 图片压缩到指定大小以下;
+        InputStream is = new FileInputStream(new java.io.File("E:\\test.jpg"));
+        byte[] bytes = new byte[is.available()];
+        is.read(bytes);
+        cut(bytes, 1024 * 1024, 1.2);
+        System.out.println(111);
     }
 }
