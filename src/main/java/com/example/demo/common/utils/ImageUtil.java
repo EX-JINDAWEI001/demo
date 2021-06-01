@@ -142,11 +142,11 @@ public class ImageUtil {
      * 将图片压缩到指定大小以下
      * @param bytes
      * @param desSize
-     * @param perScale 每次递归的压缩比, 该值大于1, 越接近1结果越精确
+     * @param perScale 每次递归的压缩比, 取值0~1之间, 越接近1结果越精确
      * @throws IOException
      */
     private static String cut(byte[] bytes, long desSize, double perScale) throws IOException {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             BufferedImage bi = ImageIO.read(new ByteArrayInputStream(bytes));
             if (bytes.length < desSize) {
                 File imageFile = new File("E:\\test123.jpg");
@@ -154,10 +154,10 @@ public class ImageUtil {
                 BASE64Encoder encoder = new BASE64Encoder();
                 return "data:image/jpg;base64," + encoder.encode(bytes);
             }
-            int srcWdith = bi.getWidth();
-            int srcHeigth = bi.getHeight();
-            int desWidth = new BigDecimal(srcWdith).divide(new BigDecimal(perScale), BigDecimal.ROUND_HALF_UP).intValue();
-            int desHeight = new BigDecimal(srcHeigth).divide(new BigDecimal(perScale), BigDecimal.ROUND_HALF_UP).intValue();
+            int srcWidth = bi.getWidth();
+            int srcHeight = bi.getHeight();
+            int desWidth = new BigDecimal(srcWidth).multiply(new BigDecimal(perScale)).intValue();
+            int desHeight = new BigDecimal(srcHeight).multiply(new BigDecimal(perScale)).intValue();
             Thumbnails.of(bi).size(desWidth, desHeight).outputQuality(1.0).outputFormat("jpg").toOutputStream(baos);
             byte[] bytess = baos.toByteArray();
             return cut(bytess, desSize, perScale);
@@ -174,7 +174,7 @@ public class ImageUtil {
         InputStream is = new FileInputStream(new java.io.File("E:\\test.jpg"));
         byte[] bytes = new byte[is.available()];
         is.read(bytes);
-        String base64 = cut(bytes, 1024 * 1024, 1.2);
+        String base64 = cut(bytes, 1024 * 1024, 0.8);
         System.out.println(base64);
     }
 }
